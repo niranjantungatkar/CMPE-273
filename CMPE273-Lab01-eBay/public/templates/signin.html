@@ -1,0 +1,50 @@
+<a ui-sref="home">
+	<div>
+		<img class="sgnImg" width="100px" height="100px" src="../images/ebaycrp2.jpg">
+	</div>
+</a>
+<div id="mainSgn">
+<!-- tabs -->
+<div class = "sgntabs">
+	<!-- Sign In Tab -->
+
+		<div id="sgninTab" class="sgnint">
+			<span></span>
+			<Span class="sgntx">Sign In</Span>
+		</div>
+
+	<!-- Register Tab -->
+	
+	<a ui-sref = "register">
+		<div id="regTab" class="regt">
+			<span></span>
+			<Span class="regtx">Register</Span>
+		</div>
+	</a>
+</div>
+
+<div>
+ <!-- method="post" action="/signin"-->
+<form id="siginForm" class="sgnForm">
+	<div class="sgnformdiv">
+		<input size="40" maxlength="64" type="text" name="sgnEmail" id = "sgnEmail" placeholder="Email or username" class="sgnInp usr"  ng-model="sgnEmail" autofocus="on" required>
+		<input size="40" maxlength="64" type="password" name="sgnPaswd" id = "sgnPaswd" placeholder="Password" class="sgnInp pswd" ng-model="sgnPaswd">
+	</div>
+	<div class="invMsg">{{invMsg}}</div>
+	<div id="sgnButton" style="margin:20px 0px 20px;">
+		<button name="sgnBut" value="Sign in" id="sgnBut" class="btn btn-primary" ng-click=checkValidLogin()>Sign In</button>	
+	</div>
+	<div class="sgnFoot">
+		<div id="sgnOpt">
+			<b>
+				<input type="checkbox" name="kpsgndin" value="1" id="sgndin" class="sgndin" checked="checked">
+			</b>
+			<span>
+				<label class="lblsgndin" for="signed_in">Stay signed in</label>
+			</span>
+		</div>
+	</div>
+</form>
+</div>
+
+</div>

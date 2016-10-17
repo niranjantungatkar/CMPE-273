@@ -1,0 +1,55 @@
+<div class="mainCheckout">
+
+	<div class="bichckrviw">
+		<h2 class="bichckrviwtitle">Review Items</h2>
+		<h5 class="cartinvmessage">{{product_id_inv}},  {{message_inv }}</h5>
+		<div class="bichckprdcts">
+			<div class ="bichckrpprds" ng-repeat="product in restructuredCart">
+				<div id="bichcksellerinfo">
+					<div class="lblseller">Seller :</div>
+					<div class="sellername">{{product.product_adv}}</div>
+				</div>
+				<div class="bichckImg"></div>
+				<div class="bichkprdDet">
+					<div class="bichckprdName">{{product.product_name}}</div>
+					<div class="bichckprdDesc">Description : {{product.product_desc}}</div>
+					<hr class="ttldiff">
+					<div class="bichckprdqt"><input type="text" class="bichckprdqtinp" id={{product.product_id}} ng-model="product.product_quantity" ng-change="updateCart(product.product_id)"></div>
+					<div class="bichckRmvprd"><a ng-click="removeProductFromCart(product.product_id)">Remove from Cart</a></div>
+				</div>
+				<div class="bichckprdpr">
+				<div class="bichckprdPrice"><h4>${{product.product_price}}</h4></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bichckSummary">
+	<h2 class="bichckrviwtitle">Total Summary</h2>
+	<hr>
+		<div class="totalItemschck">
+			<div class="bichcklbltlitems">Total Items</div>
+			<div class="bichcktotalitmval">{{totalItemsInCart}}</div>
+		</div>
+		<div class="totalAmountchck">
+			<div class="bichcklbltlamt">Total Amount</div>
+			<div class="bichcktotalamount">${{totalAmount}}</div>
+		</div>
+		
+	</div>
+	<div class="bichckcardDet">
+	<h2 class="bichckrviwtitle">Pay With</h2>
+		<div class="bichckcrdnum"><input class="bichckcrdnumip" ng-model = "creditCardNumbmer" type="text" placeholder = "Card Number"></div>
+		<div class="bichcksec">
+			<div class="bichckcrdexp"><input class="bichckcrdexpip" ng-model = "creditCardExp" type="date" placeholder = "MM/YYYY"></div>
+			<div class="bichckcrdcvv"><input class="bichckcrdcvvip"  ng-model = "creditCardCVV" type="text" placeholder = "CVV"></div>
+		</div>
+		<div class="bichcknames">
+			<div class="bichckcrdfname"><input class="bichckcrdfnameip" ng-model = "creditCardFname" type="text" placeholder ="First Name"></div>
+			<div class="bichckcrdlname"><input class="bichckcrdlnameip" ng-model = "creditCardLname" type="text" placeholder ="Last Name"></div>
+		</div>
+		<div class="bichckBut">
+			<button name="bichkCart" value="Checkout" id="bichkCart" class="col-md-3 btn btn-primary" ng-click="checkout()">Pay</button>
+		</div>
+	</div>
+	
+</div>

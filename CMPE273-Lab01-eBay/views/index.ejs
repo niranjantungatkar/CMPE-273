@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+
+    <!-- bootstrap stylesheet -->
+  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<!-- bootstrap theme css -->
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  	<!-- bootstrap jquery minified -->
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  	<!-- bootstrap javascript -->
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<!-- angular.js minified -->
+  	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+  	<!-- angular ui-router -->
+  	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>  -->
+  	<script src="/js/angular-ui-router.js"></script>
+  	<!-- jquery ui -->
+	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
+	<!-- user defined angular js file -->
+	<script src="/angularjs/angular.initial.js"></script>
+	<script src="/angularjs/controllerSignin.js"></script>
+	<script src="/angularjs/controllerRegister.js"></script>
+	<script src="/angularjs/controllerHome.js"></script>
+	<script src="/angularjs/controllerSellproduct.js"></script>
+ 	<script src="/angularjs/controllerUserinfo.js"></script>
+ 	<script src="/angularjs/controllerBuyproduct.js"></script>
+ 	<script src="/angularjs/controllerCart.js"></script>
+ 	<script src="/angularjs/controllerCheckout.js"></script>
+ 	<script src="/angularjs/controllerProfile.js"></script>
+ 	<script src="/angularjs/controllerBidproduct.js"></script>
+ 	<script src="/angularjs/controllerBidcheckout.js"></script>
+ 
+   	<!-- css -->
+   	<link rel='stylesheet' href='/stylesheets/main.body.css'/>
+  	<link rel='stylesheet' href='/stylesheets/main.header.css'/>
+  	<link rel='stylesheet' href='/stylesheets/main.container.css'/>
+  	<link rel='stylesheet' href='/stylesheets/signin.view.css'/>
+  	<link rel='stylesheet' href='/stylesheets/register.view.css'/>
+  	<link rel='stylesheet' href='/stylesheets/sellproduct.view.css'/>
+  	<link rel='stylesheet' href='/stylesheets/userinfo.view.css'/>
+  	<link rel='stylesheet' href='/stylesheets/home.view.css'/>
+  	<link rel='stylesheet' href='/stylesheets/buyproduct.view.css'/>
+  	<link rel='stylesheet' href='/stylesheets/cart.view.css'/>
+  	<link rel='stylesheet' href='/stylesheets/checkout.view.css'/>
+  	<link rel='stylesheet' href='/stylesheets/profile.view.css'/>
+  	<link rel='stylesheet' href='/stylesheets/bidproduct.view.css'/>
+  	<link rel='stylesheet' href='/stylesheets/bidcheckout.view.css'/>
+   	
+  	
+  </head>
+  <body ng-app="eBayApp" ng-controller="mainCntrl" class="mainBody">
+	
+	<!-- Main Container -->
+	<div id="main" class = "container">
+	
+	<div ui-view></div>
+	</div>
+  </body>
+</html>

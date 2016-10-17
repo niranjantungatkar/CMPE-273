@@ -1,0 +1,22 @@
+<ul>
+	<li class="cart"><a ui-sref="home.cart">Cart({{cartItemcount}})</a><li>
+</ul>
+<div class="mainbyCnt">
+	<div class="byprdImg"></div>
+	<div class="byprdinfo">
+		<h2 class="byprdtitle">{{product_detail.product_name}}</h2>
+		<div >Product Description : {{product_detail.product_desc}}</div>
+		<hr class="byhr">
+		<div class="byprdDet">Quantity: <input type="number" id = "byprdqt" name="quantity" min="1" max={{product_detail.product_quantity}}></div>
+		<div class="byprdDet">Seller Info : {{product_detail.product_seller_info}}</div>
+		<div class="byprdDet bypr">Product Price :<strong>${{product_detail.product_price}}</strong></div>
+		<div class="byprdDet">In Stock : {{product_detail.product_quantity}}</div>
+		<div class="byprdDet prdoutofstock" ng-show="outofstock">Out of Stock</div>
+	</div>
+	<div class="byaddcart">
+		<button name="addtocarBut" value="cart" id="addtocarBut" class="btn btn-primary" ng-click="addItemtoCart()">Add To Cart</button>
+		<button name="byprdBut" value="Buy" id="byprdBut" class="btn btn-primary" ng-click="buyproduct()">Checkout</button>
+		<button name="byprdButrmv" value="Remove" id="byprdButrmv" class="btn btn-warning" ng-click="removeProductFromcart()" ng-show="removefromcart">Remove From Cart</button>
+	</div>
+
+</div>

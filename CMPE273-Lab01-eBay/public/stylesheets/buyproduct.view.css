@@ -1,0 +1,60 @@
+/**
+ * http://usejsdoc.org/
+ */
+ .byprdImg{
+ 	width : 200px;
+ 	height : 200px;
+ 	border : 0.5px solid #ddd;
+ }
+.mainbyCnt{
+	display : inline-block;
+	margin-top : 70px;
+}
+
+.byhr{
+	width: 800px;
+
+}
+
+.byprdDet{
+	margin-left : 3px;
+}
+
+.byprdinfo{
+	position: absolute;
+	top : 100px;
+	left : 550px;
+}
+
+.bypr{
+	display : inline;
+}
+
+.byprd{
+	float : left;
+	
+}
+
+.byaddcart{
+	position: absolute;
+	top : 320px;
+	margin: 10px 10px 10px 10px;
+    margin-left: 240px;
+}
+#addtocarBut{
+	float : left;
+}
+#byprdBut{
+	float: left;
+    margin-left: 10px;
+    width: 110px;
+}
+
+#byprdButrmv{
+		float: left;
+    margin-left: 10px;
+    width: 150px;
+}
+.prdoutofstock{
+	color : red;
+} 

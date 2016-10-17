@@ -1,0 +1,33 @@
+<div class="mainBidchck">
+<div class="bichckprdDet">
+	<div class="byprdImg"></div>
+	<div class="bichckinfo">
+		<div class="bichckproductName"><h4>{{product_detail.product_name}}</h4></div>
+		<div class="bichckproductAmount">Amount <strong>${{product_detail.current_bid}}</strong></div>
+		<div class="bichckproduct">
+	</div>
+	</div>
+
+	
+</div>
+
+<div class="bidchckcardDet">
+	<h2 class="bidchckrviwtitle">Pay With</h2>
+		<div class="bidchckcrdnum"><input class="bidchckcrdnumip" ng-model = "bicreditCardNumbmer" type="text" placeholder = "Card Number"></div>
+		<div class="bidchcksec">
+			<div class="bidchckcrdexp"><input class="bidchckcrdexpip" ng-model = "bicreditCardExp" type="date" placeholder = "MM/YYYY"></div>
+			<div class="bidchckcrdcvv"><input class="bidchckcrdcvvip"  ng-model = "bicreditCardCVV" type="text" placeholder = "CVV"></div>
+		</div>
+		<div class="bidchcknames">
+			<div class="bidchckcrdfname"><input class="bidchckcrdfnameip" ng-model = "bicreditCardFname" type="text" placeholder ="First Name"></div>
+			<div class="bidchckcrdlname"><input class="bidchckcrdlnameip" ng-model = "bicreditCardLname" type="text" placeholder ="Last Name"></div>
+		</div>
+		<div class="bidchckBut">
+			<button name="bidchkCart" value="Checkout" id="bidchkCart" class="col-md-3 btn btn-primary" ng-click="checkoutBidProduct()">Pay</button>
+		</div>
+	</div>
+
+</div>
+
+
+

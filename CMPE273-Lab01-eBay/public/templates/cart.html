@@ -1,0 +1,38 @@
+<div class="mainCart">
+	<div class = "cartpg" ng-repeat="cartproduct in cartproducts" ng-show="!checkIfEmpty()">
+		<div class="cartPrdInfo">
+			<div class="crtimg">
+			</div>
+			<div class="crtprdDet">
+				<div class="crtPrdNm">Product Name : {{cartproduct.product_name}}</div>
+				<div class="crtPrdDs">Product Description : {{cartproduct.product_desc}}</div>
+				<hr class="crtdiff">
+				<div class="crtPrdsellinf">Quantity : {{cartproduct.product_quantity}}</div>
+				<div class="crtPrdsellinf">Seller Info : {{cartproduct.product_seller_info}}</div>
+				<div class="crtPrdpr"><strong>${{cartproduct.product_price}}</strong></div>
+				<div class="crtRmvPrd"><a ng-click="removeProductFromCart(cartproduct.product_id, cartproduct.product_quantity)">Remove from Cart</a></div>
+			</div>
+		</div>
+	</div>
+	<div ng-show="!checkIfEmpty()">
+		<hr>
+			<div class="crtsummary">
+				<div class="crttotallbl">Total Amount : </div>
+			<div class="crttotalval"><strong>${{total}}</strong></div>
+		</div>
+		
+		<div class="crtsummary">
+			<div class="crttotallbl">Total Items In the Cart : </div>
+			<div class="crttotalval"><strong>{{total_num_items}}</strong></div>
+		</div>
+	
+		<button name="crtPrdChk" value="Checkout" id="crtPrdChk" class="btn btn-primary" ng-click="checkout(cartproducts)">Checkout</button>
+		<button name="crtPrdChkb" value="Checkout" id="crtPrdChkb" class="btn btn-primary" ng-click="checkout(cartproducts)">Checkout</button>
+	</div>
+	
+	
+	
+	<div class="cartempty" ng-show = "checkIfEmpty()">
+		<h3>Oops! Your Cart is Empty</h3>		
+	</div>
+</div>

@@ -1,0 +1,80 @@
+.mainCart{
+	margin-top : 100px;
+}
+
+
+
+.crtimg{
+	margin : 10px;
+	width : 170px;
+ 	height : 100px;
+ 	border : 0.5px solid #ddd;
+ 	float : left;
+ 	
+}
+.crtprdDet{
+	float : left;
+	margin-top : 0px;
+	margin-left : 5px;
+}
+
+.cartPrdInfo{
+	margin: 10px 5px;
+	display : inline-block;
+	border : 1px solid #ddd;
+	border-radius : 2px;
+	width : 100%;
+	
+}
+
+.crtPrdNm {
+	margin-top : 0px;
+	font-size : 20px;
+}
+.crtPrdDs{
+	margin-top : 5px;
+}
+.crtPrdsellinf{
+	margin-top : 0px;
+} 
+.crtPrdpr{
+	margin-top : 0px;
+}
+.crtdiff{
+	margin-top : 0px;
+	margin-bottom : 0px;
+}
+
+.crtRmvPrd{
+	cursor : pointer;
+}
+
+#crtPrdChk{
+	position : absolute;
+	top : 80px;
+	left : 1316px;
+}
+
+#crtPrdChkb{
+	margin-bottom : 20px;
+	
+	margin-left : 1000px;
+}
+
+.crtsummary{
+	display : inline;
+	width : 100%;
+	margin-left : 800px;
+}
+
+.crttotallbl{
+	float : left;
+	font-size : 20px;
+}
+
+.crttotalval{
+	float : left;
+	margin-left : 30px;
+	font-size : 20px;
+}
+

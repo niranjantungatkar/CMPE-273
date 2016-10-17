@@ -1,0 +1,19 @@
+<div class="mainBid">
+	<div class="biprdImg"></div>
+		<div class="biprdinfo">
+			<h2 class="biprdtitle">{{product_detail.product_name}}</h2>
+			<div >Product Description : {{product_detail.product_desc}}</div>
+			<hr class="bihr">
+		
+			<div class="biprdDet">Seller Info : {{product_detail.product_seller_info}}</div>
+			<div class="biprdDet">Original Product Price :<strong>${{product_detail.product_price}}</strong></div>
+			<div class="biprdDet">Base Bid Price :<strong>${{product_detail.product_base_bid}}</strong></div>
+			<div class="biprdDet">Current Bid Price :<strong>${{product_detail.current_bid}}</strong></div>
+			<input type="text" class="bidamount" ng-model="bidamount">
+			<button name="biprdBut" value="Buy" id="biprdBut" class="btn btn-primary" ng-click="bidproduct()" ng-show="showBid">Submit Bid</button>
+			<div class="bidSubsucc" ng-show="bidSubmitMessage">Bid Submitted Successfully</div>
+		</div>
+		<div class="bientrbid">
+			
+		</dvi>
+</div>

@@ -1,0 +1,59 @@
+<!-- Header -->
+<div id="header">
+	<ul ng-show="!userSessionValid()">
+		Hi! <li><a ui-sref="signin">Sign In</a></li> or  
+			<li><a ui-sref="register">Register</a></li>
+	</ul>
+	<ul ng-show="userSessionValid()">
+		Hi <li><a ui-sref="home.userinfo" ng-click="logInfoVisitor('UserInfo:navigate')">{{user}}</a></li>!
+		<li class="adv"><a ui-sref="home.adv">Sell</a></li> 
+		<li class="cart"><a ui-sref="home.cart" ng-click="logInfoVisitor('UserCart:navigate')">Cart</a><li>  
+		<li class="lgout"><a ui-sref="home" ng-click="logout()">Logout</a></li>
+	</ul>
+</div>
+<div class="usrInfoheader" ng-click="logInfoVisitor('HomeImg:navigate')">
+<a ui-sref="home">
+	<div>
+		<img class="userInfoimg" width="100px" height="100px" src="../images/ebaycrp2.jpg">
+	</div>
+</a>
+</div>
+<!-- Middle main content -->
+<div id="middle">
+<div ui-view>
+	<div class= "hmCnt">
+		<div class="bidprdcts">
+			<h5 class="hmprdheader">Bid Products</h5>
+			<hr>
+			<div class="bidPrdcts" ng-repeat="bidproduct in bidproducts">
+				<div><h3>{{bidproduct.product_name}}</h3></div>
+				<div><h5>{{bidproduct.product_seller_info}}</h5></div>
+				<div><h5>Original Price <strong>${{bidproduct.product_price}}</strong></h5></div>
+				<div><h5>Base Price <strong>${{bidproduct.product_base_bid}}</strong></h5></div>
+				<div><h5>Current Bid <strong>${{bidproduct.current_bid}}</strong></h5></div>
+				<div><button name="bidBut" value="Bid" id="bidBut" class="btn btn-primary" ng-click="bidProduct(bidproduct.product_id)">Bid</button></div> 
+			</div>
+		</div>
+		<hr>
+		<div class="prdcts">
+			<h5 class="hmprdheader">Products</h5>
+			<hr>
+			<div class="indPrdcts" ng-repeat="product in products">
+				<div><h3>{{product.product_name}}</h3></div>
+				<div><h5>{{product.product_seller_info}}</h5></div>
+				<div><h5>In Stock : {{product.product_quantity}}</h5></div>
+				<div><h2>${{product.product_price}}</h2></div>
+				<div><button name="buyBut" value="Buy" id="buyBut" class="btn btn-primary" ng-click="buyProduct(product.product_id)">Buy</button></div>
+				<!-- 
+				<div>{{product.product_desc}}</div>
+				<div>{{product.product_id}}</div>
+				<div>{{product.product_quantity}}</div> -->
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<!-- Bottom content -->
+<div id="footer"></div>		
+</div>  

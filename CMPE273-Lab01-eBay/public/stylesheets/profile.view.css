@@ -1,0 +1,62 @@
+.prfMain{
+	margin-top : 100px;
+	margin-left : 80px;
+}
+
+.prfFnameval, .prfLnameval, .prfBdayval, .prfAddstrt1val, .prfabtval, .prfBdayval2, .prfhandval{
+	margin-top : 5px;
+	margin-bottom : 10px;
+	border-radius : 3px;
+	width : 330px;
+	border : 0;
+	border-bottom : 1px solid #BFC9CA;
+}
+
+.prfPersonalttl{
+	color: #767676;
+    font-size: 18px;
+    padding: 0 0 0 2px;
+    margin: 0;
+}
+
+.prfContactttl{
+	color: #767676;
+    font-size: 18px;
+    padding: 0 0 0 2px;
+    margin-top : 45px;
+}
+
+.prfAddttl{
+	color: #767676;
+    font-size: 18px;
+    padding: 0 0 0 2px;
+    margin-top : 30px;
+}
+.prfAddstrt1val{
+	font-style : italic;
+}
+.prfFnamelbl, .prfLnamelbl, .prfBdaylbl, .prftellbl, .prftelip, .prfEmaillbl, .prfabtlbl, .prfhanlbl{
+	color : #717D7E  
+}
+
+
+.prfUpd{
+	margin-top : 15px;
+}
+
+.prfusername{
+	font-size : 25px;
+	margin-bottom : 10px;
+}
+.prfuserAbout{
+	font-size : 15px;
+	margin-bottom : 25px;
+}
+
+.prfInv{
+	color : red;
+}
+
+.prfUpdclick, .prfUpdAddclick, .prfUpdperclick{
+	cursor : pointer;
+}

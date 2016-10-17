@@ -1,0 +1,77 @@
+.mainBidchck{
+	margin-top : 100px;
+}
+
+.byprdImg{
+	float : left;
+}
+
+.bidchckinfo{
+	margin-left : 40px;
+	float: left;
+}
+
+.bidchckcardDet{
+	margin-top : 0px;
+	margin-left : 250px;
+}
+
+.bidchckcardDet{
+	
+	position : absolute;
+	top : 120px;
+	left : 700px;
+	margin-top : 0px;
+	width : 400px;
+}
+
+.bidchckrviwtitle {
+    color: #767676;
+    font-size: 18px;
+    padding: 0 0 10px 2px;
+    margin: 0;
+}
+
+
+.bidchckcrdnumip{
+	border : 0;
+	margin-top : 15px;
+	border-bottom : 2px solid #ddd;
+	margin-bottom : 10px;
+	width : 350px;
+}
+
+.bidchckcrdexpip{
+	border : 0;
+	border-bottom : 2px solid #ddd;
+	margin-bottom : 10px;
+	float : left;
+	width : 150px;
+}
+.bidchckcrdcvvip{
+	float : left;
+	width : 100px;
+	border : 0;
+	border-bottom : 2px solid #ddd;
+	margin-bottom : 10px;
+	margin-left : 100px;
+}
+
+.bidchckcrdfnameip{
+	border : 0;
+	border-bottom : 2px solid #ddd;
+	margin-bottom : 10px;
+	float : left;
+	width : 150px;
+}
+.bidchckcrdlnameip{
+	float : left;
+	width : 150px;
+	border : 0;
+	border-bottom : 2px solid #ddd;
+	margin-bottom : 10px;
+	margin-left : 50px;
+}
+.bichckinfo{
+	margin-left: 230px;
+}

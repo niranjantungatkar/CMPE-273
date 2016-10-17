@@ -1,0 +1,53 @@
+.usrInfoheader{
+	margin-top: 0px;
+	width : 100%;
+    height: 55px;
+    float : left;
+    position: absolute;
+    top : 30px;
+
+}
+.userInfoimg{
+	margin-top: 0px;
+    height: 55px;
+    float : left;
+    
+}
+
+.cover{
+    margin-top: 70px;
+	background-image : url(../images/profile_coverimg_wood.jpg);
+	width : 100%;
+	height : 250px;
+}
+
+.userpane{
+width: 45%;
+    height: 150px;
+    opacity: .95;
+    margin-left: 130px;
+    position: absolute;
+    top: 175px;
+    filter: 0.95;
+    background: #f9f9f9;
+}
+
+.usrImg{
+	margin-left : 4px;
+	margin-top : 5px;
+	max-width: 150px;
+    max-height: 150px;
+    margin-bottom: -2px;
+}
+
+.infusr{
+	position: absolute;
+    top: 6px;
+    left: 170px;
+}
+
+.infusrlstlgn{
+	position: absolute;
+    top: 30px;
+    left: 170px;
+}

@@ -1,0 +1,116 @@
+<div class="usrInfoheader">
+<a ui-sref="home">
+	<div>
+		<img class="userInfoimg" width="100px" height="100px" src="../images/ebaycrp2.jpg">
+	</div>
+</a>
+</div>
+
+<div class="cover">
+	<div class="userpane">
+		<div class="usrImg">
+			<img  width="100%" height="100%" src="../images/avatar.png">
+		</div>
+		<div class="infusr">
+			<h4>{{user}}</h4>
+		</div>
+		<div class="infusrlstlgn">
+			<h6>Last Login: {{userLastLogin}}</h6>
+			<a ui-sref ="home.profile"><button name="editProfile" value="Edit" id="editProfile" class="btn btn-primary">Edit Profile</button></a>
+		</div>
+	</div>
+</div>
+<div>
+<h4>Items For Sale({{totaItmsforSale}})</h4>
+<hr>
+<div class="itmsSalebi">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Product Name</th>
+				<th>Product Status</th>
+				<th>Highest Bidder</th>
+				<th>Highest Bid</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat = "itm in itmsforsale">
+				<td>{{itm.product_name}}</td>
+				<td>{{itm.product_sold_flag}}</td>
+				<td>{{itm.current_bidder}}</td>
+				<td>{{itm.current_bid}}</td>
+			</tr>
+		</tbody>
+		
+	</table>
+
+</div>
+<h4>Items Bought</h4>
+<hr>
+<div class="itmsBghtbi">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Product Name</th>
+				<th>            </th>
+				<th>Product Quantity</th>
+				<th>Amount</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat = "itmbght in itmsbought">
+				<td>{{itmbght.product_name}}</td>
+				<td></td>
+				<td>{{itmbght.product_quantity}}</td>
+				<td>{{itmbght.trans_amount}}</td>
+			</tr>
+		</tbody>	
+	</table>
+</div>
+<h4>Your Bids</h4>
+<hr>
+<div class="tuserBids">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Product Name</th>
+				<th></th>
+				<th>Amount</th>
+				<th>Time</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat = "tbid in totaluserbids">
+				<td>{{tbid.product_name}}</td>
+				<td></td>
+				<td>{{tbid.bid_amount}}</td>
+				<td>{{tbid.bid_time}}</td>
+			</tr>
+		</tbody>	
+	</table>
+</div>
+
+
+<h4>Your Successful Bids</h4>
+<hr>
+<div class="userBids">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Product Name</th>
+				<th></th>
+				<th>Amount</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat = "bid in userbids">
+				<td>{{bid.product_name}}</td>
+				<td></td>
+				<td>{{bid.bid_amount}}</td>
+				<td><button name="usrBuyBut" value="BidBuy" id="usrBuyBut" class="btn btn-primary" ng-click="buyBidProduct(bid.product_id)">Pay</button></td>
+			</tr>
+		</tbody>	
+	</table>
+</div>
+
+</div>

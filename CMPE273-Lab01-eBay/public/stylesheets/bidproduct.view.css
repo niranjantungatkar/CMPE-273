@@ -1,0 +1,25 @@
+ .biprdImg{
+ 	width : 200px;
+ 	height : 200px;
+ 	border : 0.5px solid #ddd;
+ 	float: left;
+ }
+ 
+ .mainBid{
+	
+	margin-top : 70px;
+}
+
+.biprdinfo{
+	margin-left : 30px;
+	float: left;
+}
+
+.biprdtitle{
+	margin-top : 0px;
+}
+
+.bidSubsucc{
+	margin-top : 10px;
+	
+}

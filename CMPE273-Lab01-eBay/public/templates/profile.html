@@ -1,0 +1,99 @@
+<div class="prfMain">
+	<div class = "prfMainform">
+	<form>
+		<div class="prfusername">{{username}}</div>
+		<!-- <div class="prfusername">{{about}}</div> -->
+		<div class="prfPersonal">
+			<h2 class="prfPersonalttl">Personal Details</h2>
+			<hr class="prfDiff">
+			<div>
+				<div class="prfabtlbl">
+					<label>About</label>
+				</div>
+				<div class="prfabt">
+					<input type="text" class="prfabtval" name="prfabtval" id="prfabtval" ng-model="about">
+					<div class="prfInv">{{invAbt}}</div>
+				</div>
+				<div class="prfhanlbl">
+					<label>eBay Handle</label>
+				</div>
+				<div class="prfhand">
+					<input type="text" class="prfhandval" name="prfhandval" id="prfhandval" ng-model="handle">
+					<div class="prfInv">{{invHandle}}</div>
+				</div>
+				<div class="prfFnamelbl">
+					<label>First Name</label>
+				</div>
+				<div class="prfFname">
+					<input type="text" class="prfFnameval" name="prfFnameval" id="prfFnameval" ng-model="first_name">
+					<div class="prfInv">{{invFname}}</div>
+				</div>
+			</div>
+		
+			<div>
+				<div class="prfLnamelbl">
+					<label>Last Name</label>
+				</div>
+				<div class="prfLname">
+					<input type="text" class="prfLnameval" name="prfLnameval" id="prfLnameval" ng-model="last_name">
+					<div class="prfInv">{{invLname}}</div>
+				</div>
+			</div>
+			
+			<div>
+				<div class="prfBdaylbl">
+					<label>Birthday</label>
+				</div >
+				<div class="prfBday">
+					<input type="text" class="prfBdayval" name="prfBdayval" id="prfBdayval" ng-model="bday">
+					<input type="date" class="prfBdayval2" name="prfBdayval2" id="prfBdayval2" ng-model="bday2">
+					<div class="prfInv">{{invBday}}</div>
+				</div>
+			</div>
+		</div>
+		<!-- <button name="prfUpdBut" value="Edit Profile" id="prfUpdBut" class="col-md-4 btn btn-primary" ng-click="updateProfile()">Update Profile</button> -->
+		<div class="prfUpd">
+			<a class="prfUpdperclick" ng-click="updatePersonalDet()">Update Personal Details</a>
+		</div>
+		
+		<h2 class="prfContactttl">Contact Details</h2>
+		<hr  class="prfDiff">
+		<div class="prfContact">
+				<!--<div class="prfEmail">
+			  <div class="prfEmaillbl">
+					<label>Email</label>
+				</div>
+				<div class="prfEmailip">
+					<input type="text" class="prfLnameval" name="prfLnameval" id="prfLnameval" ng-model="email">
+				</div>  
+			</div>-->
+				
+			<div class="prftel">
+				<div class="prftellbl">
+					<label>Telephone</label>
+				</div>
+				<div class="prftelip">
+					<input type="tel" class="prfLnameval" name="prfLnameval" id="prfLnameval" ng-model="telephone">
+					<div class="prfInv">{{invTel}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="prfUpdcnt">
+			<a class="prfUpdclick" ng-click="updateContact()">Update Contact Details</a>
+		</div>
+		<h2 class="prfAddttl">Address Details</h2>
+		<hr  class="prfDiff">
+		<div class="prfAddress">
+			<div class="prfAddstrt1">
+				<input type="text" class="prfAddstrt1val" name="prfAddstrt1val" id="prfAddstrt1val" ng-model="address" placeholder = "Street Number, Apt.,  zip, State">
+			</div>
+			<div class="prfInv">{{invAdd}}</div>
+		</div>
+		<div class="prfUpdAdd">
+			<a class="prfUpdAddclick" ng-click="updateAddress()">Update Address</a>
+		</div>
+	</form>
+	</div>
+	
+	
+</div>

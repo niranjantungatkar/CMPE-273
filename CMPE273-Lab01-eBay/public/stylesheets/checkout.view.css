@@ -1,0 +1,178 @@
+.mainCheckout{
+	margin-top : 300px;
+	display : inline;
+}
+
+.bichckSummary{
+	margin-top: 100px;
+	display : inline;
+    float: left;
+}
+
+.bichckrviw{
+	display : inline;
+	float: left;
+	margin-top: 100px;
+	width : 60%;
+}
+.bichckrviwtitle {
+    color: #767676;
+    font-size: 18px;
+    padding: 0 0 10px 2px;
+    margin: 0;
+}
+
+.bichckprdcts{
+	display : inline-block;
+	height : 100%;
+	width : 80%;
+	background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-clip: padding-box;
+}
+
+#bichcksellerinfo{
+	padding : 12px;
+	border : 1px solid #ccc;
+	
+}
+.lblseller{
+	float: left;
+    font-size: 15px;
+    margin-right: 10px;
+    color: #767676;
+}
+
+.bichckImg{
+	width : 100px;
+	height : 100px;
+	margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+	border: 1px solid #ccc;
+    border-radius: 3px;
+    float : left;
+}
+
+.ttldiff{
+	margin-top : 0px;
+	margin-bottom : 0px;
+}
+
+.bichkprdDet{
+	float : left;
+	margin-left : 10px;
+	margin-top : 5px;
+}
+.bichckprdpr{
+	float : right;
+	margin-right : 20px;
+	margin-top : 10px;
+}
+
+.bichckrpprds{
+	display : inline-block;
+	width : 100%;
+}
+
+.bichckprdName{
+	font-size : 20px;
+	
+}
+.bichckprdDesc{
+	font-size : 13px;
+}
+
+.bichckprdqtinp{
+	border-radius : 3px;
+	border : .5px solid #ccc;
+	width : 30px;
+	margin-top : 10px;
+	text-align : center;
+}
+.cartinvmessage{
+	margin-top : 3px;
+	margin-bottom : 3px;
+	color : red;
+}
+
+.bichckcardDet{
+	float : left;
+	margin-top : 85px;
+	width : 400px;
+}
+.bichckcrdnumip{
+	border : 0;
+	margin-top : 15px;
+	border-bottom : 2px solid #ddd;
+	margin-bottom : 10px;
+	width : 350px;
+}
+
+.bichckcrdexpip{
+	border : 0;
+	border-bottom : 2px solid #ddd;
+	margin-bottom : 10px;
+	float : left;
+	width : 150px;
+}
+.bichckcrdcvvip{
+	float : left;
+	width : 100px;
+	border : 0;
+	border-bottom : 2px solid #ddd;
+	margin-bottom : 10px;
+	margin-left : 100px;
+}
+.bichcksec{
+	display : inline
+}
+
+.bichcknames{
+	display : inline;
+}
+
+.bichckcrdfnameip{
+	border : 0;
+	border-bottom : 2px solid #ddd;
+	margin-bottom : 10px;
+	float : left;
+	width : 150px;
+}
+.bichckcrdlnameip{
+	float : left;
+	width : 150px;
+	border : 0;
+	border-bottom : 2px solid #ddd;
+	margin-bottom : 10px;
+	margin-left : 50px;
+}
+
+
+
+.totalItemschck{
+	display : inline;
+	margin-top : 10px;
+}
+.bichcklbltlitems{
+	float : left;
+}
+.bichcktotalitmval{
+	margin-left: 300px;
+
+}
+
+.totalAmountchck{
+	display : inline;
+	margin-top :20px;
+}
+.bichcklbltlamt{
+	float : left;
+	margin-top : 20px;
+}
+.bichcktotalamount{
+	margin-left : 300px;
+	font-size : 20px;
+	margin-top : 13px;
+}

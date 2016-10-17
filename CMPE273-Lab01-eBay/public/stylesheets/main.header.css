@@ -1,0 +1,13 @@
+ul{
+	padding : 0;
+}
+li{
+	display : inline;
+	border-right : 1px black;
+}
+.lgout{
+	float : right;
+}
+.adv{
+	padding : 0 9px 0 11px;	
+}

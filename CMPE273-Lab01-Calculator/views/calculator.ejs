@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+  	<head>
+ 		<!-- bootstrap stylesheet -->
+  		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  		<!-- bootstrap theme css -->
+  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  		<!-- bootstrap jquery minified -->
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  		<!-- bootstrap javascript -->
+  		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  		<!-- angular.js minified -->
+  		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+  		<!-- jquery ui -->
+		<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+		<!-- user defined angular js file -->
+		<script src="/Angularjs/calculator/util.calculator.js"></script>
+  		<link rel='stylesheet' href='/stylesheets/style.css' />
+  		<title>Calculator</title>
+  </head>
+  
+  <body ng-app = "calculator" ng-controller="calcController">
+  		<div class = "container">
+  			<div class = "row">
+  				<div class="col-lg-12">
+  					<div class="panel panel-info">
+  						<div class="panel-heading"><strong>Calculator</strong></div>
+  					</div>
+  				</div>
+
+				<!-- Input and Clear -->
+				<div class="col-lg-6">
+					<input type="text" class="col-lg-12 form-control" name = "expression" id="expression" ng-model="inputDisp" ng-keydown=checkValidity($event)>
+				</div>
+				<div class="col-lg-3">	
+					<button class="col-lg-12 btn btn-secondary" type="button" value="C" ng-click=handleClick('C')>C</button>	
+				</div>
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="AC" ng-click=handleClick('AC')>AC</button>
+				</div>
+					
+				<!-- First Row -->
+				<div class="col-lg-3">	
+					<button class="col-lg-12 btn btn-secondary" type="button" value="1" ng-click=handleClick('1')>1</button>	
+				</div>
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="2" ng-click=handleClick('2')>2</button>
+				</div>
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="3" ng-click=handleClick('3')>3</button>
+				</div>
+				<div class="col-lg-3">	
+					<button class="col-lg-12 btn btn-secondary" type="button" value="/" ng-click=handleClick('/')>/</button>	
+				</div>
+					
+					
+				<!-- Second Row -->
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="4" ng-click=handleClick('4')>4</button>
+				</div>
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="5" ng-click=handleClick('5')>5</button>
+				</div>
+ 				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="6" ng-click=handleClick('6')>6</button>
+				</div>
+				<div class="col-lg-3">	
+					<button class="col-lg-12 btn btn-secondary" type="button" value="X" ng-click=handleClick('*')>X</button>	
+				</div>
+				
+				<!-- Third Row -->
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="7" ng-click=handleClick('7')>7</button>
+				</div>
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="8" ng-click=handleClick('8')>8</button>
+				</div>
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="9" ng-click=handleClick('9')>9</button>
+				</div>
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="add" ng-click=handleClick('+')>+</button>
+				</div>
+					
+				<!-- Last Row -->
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="." ng-click=handleClick('.')>.</button>
+				</div>
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="0" ng-click=handleClick('0')>0</button>
+				</div>
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="-" ng-click=handleClick('-')>-</button>
+				</div>
+				<div class="col-lg-3">
+					<button class="col-lg-12 btn btn-secondary" type="button" value="=" ng-click=handleClick('=')>=</button>
+				</div>
+			<div>
+  		</div>  
+  		<p>{{valid}}</p>
+  		<p>{{valid2}}</p>
+  </body>
+</html>

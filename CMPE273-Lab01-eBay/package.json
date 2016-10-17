@@ -1,0 +1,16 @@
+{
+  "name": "CMPE273-Lab01-eBay",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.2.6",
+    "ejs": "*"
+  },
+  "devDependencies": {
+    "should": "^11.1.1",
+    "supertest": "^2.0.0"
+  }
+}

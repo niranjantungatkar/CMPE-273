@@ -1,0 +1,58 @@
+<a ui-sref="home">
+	<div>
+		<img class="rgnImg" width="100px" height="100px" src="../images/ebaycrp2.jpg">
+	</div>
+</a>
+<div id="mainRgn">
+<!-- tabs -->
+<div class = "rgntabs">
+	<!-- Sign In Tab -->
+		<a ui-sref = "signin">
+			<div id="rsgnTab" class="rsgnint">
+				<span></span>
+				<Span class="rsgntx">Sign In</Span>
+			</div>
+		</a>
+	<!-- Register Tab -->
+	<div id="regTab" class="rgnt">
+		<span></span>
+		<Span class="rrgntx">Register</Span>
+	</div>
+</div>
+
+
+<div>
+<form id="regnForm" class="rgnForm">
+	<div class="rgnformdiv">
+		<input size="40" maxlength="64" type="email" placeholder="Email" class="rgnInp rgnusr" required autofocus = "on" ng-model = "rgnEmail">
+		<input size="40" maxlength="64" type="email" placeholder="Reenter Email" class="rgnInp rergnusr" required ng-model = "rergnEmail">
+		<div class="invEmail">{{invEmail}}</div>
+		<input size="40" maxlength="64" type="password"  placeholder="Password" class="rgnInp rgnpswd" required ng-model = "rgnPaswd">
+		<div class="invPaswd">{{invPaswd}}</div>
+		<input maxlength="64" type="text" name="fname" value="" id="fname" size="32" class="rgnInp2 rgnfname"  placeholder="First name" ng-model = "rgnFname" pattern = "[A-Za-z]+" required>
+		<input maxlength="64" type="text" name="lname" value="" id="fname" size="32" class="rgnInp2 rgnlname"  placeholder="Last name" ng-model = "rgnLname" pattern = "[A-Za-z]+" required>
+		<div class="invLname">{{invLname}}</div>
+		<input size="40" maxlength="10" type="tel" autocapitalize="off" autocorrect="off" placeholder="Mobile Phone" class="rgnInp rgntel" ng-model = "rgntel" pattern = "[0-9]{10}" required >
+		<div class="invTel">{{invTel}}</div>
+		
+	</div>
+	
+	<div id="rgnButton" style="margin:20px 0px 20px;">
+		<button type="submit" name="rgnBut" value="Register" id="rgnBut" class="btn btn-primary" ng-click=addUser()>Register</button>	
+	</div>
+<!-- 
+	<div class="sgnFoot">
+		<div id="sgnOpt">
+			<b>
+				<input type="checkbox" name="kpsgndin" value="1" id="sgndin" class="sgndin" checked="checked">
+			</b>
+			<span>
+				<label class="lblsgndin" for="signed_in">Stay signed in</label>
+			</span>
+		</div>
+	</div>
+-->
+</form>
+</div>
+
+</div>
