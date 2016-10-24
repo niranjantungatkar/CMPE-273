@@ -2,21 +2,18 @@
  * @file 		: 	func.register.js
  * @author		: 	Niranjan Tungatkar
  * @Description : 	contains functions related to user registration.
- * @returns 	: 	.
  * @functions	: 	getUserQuery
  * 					getCurrentTime
- * 					getLastLoginUpdateQuery
- * 					checkValidLogin 
- * 					getInvalidLogin
- * 					getValidLogin
+ * 					getInsertQuery
+ * 					setValidregistrationFalse 
+ * 					setValidregistrationUserExists
+ * 					setValidregistrationUserAdded
  */
 var mysql = require('./util.database');
+var mongo = require('./util.mongo');
 var dateFormat = require('dateformat');
 var crypto = require('crypto');
-
 var algorithm = 'aes-256-ctr';
-
-
 
 function getCurrentTime()
 {
@@ -56,81 +53,74 @@ function setValidregistrationUserAdded(validRegistration)
 	return validRegistration;
 }
 
-
-function checkUsernameExists(validRegistration, username){
-	
-	var usernameAlreadyExists = true;
-	
-	mysql.fetchData(function(err,results) {
-		if(err)
-		{
-			
-			setValidregistrationFalse(validRegistration);
-			usernameAlreadyExists = true;
-			throw err;
-		}
-		else
-		{
-			if(results[0].cnt > 0)
-			{
-			
-				setValidregistrationUserExists(validRegistration);
-				usernameAlreadyExists = true;
-			}
-			else
-			{	
-				
-				usernameAlreadyExists = false;
-			}
-		}
-	}, getUserQuery(username));
-	
-	return usernameAlreadyExists;
-}
-
-
-
-function registerUser(username,password,FirstName,LastName,Telephone, validRegistration)
-{
-	
-	var insertQuery = getInsertQuery(username,password,FirstName,LastName,Telephone);
-	var registrationFlag = false;
-	
-	mysql.updateData(function(err,results) {
-		if(err)
-		{
-			
-			setValidregistrationFalse(validRegistration);
-			throw err;
-		}
-		else
-		{
-			
-			setValidregistrationUserAdded(validRegistration);
-			registrationFlag = true;
-		}
-	}, insertQuery);
-	return registrationFlag;
-}
-
+/*
+ * Password encryption
+ */
 function encrypt(password)
 {
 	var cipher = crypto.createCipher(algorithm, password);
-	return cipher;
+	var crypted = cipher.update(password,'utf8','hex')
+	crypted += cipher.final('hex');
+	return crypted;
 }
 
-
+/*
+ * Add user Function for Mongodb.
+ */
 exports.addUser = function(req, res){
-	
 	var validRegistration = { "flag" : false, "message": null};
-	
 	var username = req.param('username');
 	var password = encrypt(req.param('password'));
 	var FirstName = req.param('FirstName');
 	var LastName = req.param('LastName');
 	var Telephone = req.param('Telephone');
 
+	mongo.connect("mongodb://localhost:27017/ebay", function(connection){
+		var collection = mongo.collection("user_detail");
+		collection.findOne({username : username}, function(err, userDetails){
+			if(err)
+			{
+				validRegistration = setValidregistrationFalse(validRegistration);
+				res.send(validRegistration);
+				throw err;
+			}
+			if(userDetails != null && userDetails != undefined && userDetails != "" ){
+				if(userDetails.username != null ||  userDetails.username != undefined || userDetails.username != "" )
+				{
+					validRegistration = setValidregistrationUserExists(validRegistration);
+					res.send(validRegistration);
+				}		
+			}
+			else
+			{
+				collection.insert({
+					username : username,
+					password : password,
+					first_name : FirstName,
+					last_name : LastName,
+					telephone : Telephone
+				});	
+				validRegistration = setValidregistrationUserAdded(validRegistration);
+				res.send(validRegistration);
+			}
+		});			
+	});	
+};
 
+
+
+/*
+ * Add user Function for Mysql. Needs to be removed
+ */
+/*exports.addUser = function(req, res){
+	
+	var validRegistration = { "flag" : false, "message": null};
+	var username = req.param('username');
+	var password = encrypt(req.param('password'));
+	var FirstName = req.param('FirstName');
+	var LastName = req.param('LastName');
+	var Telephone = req.param('Telephone');
+	
 	mysql.fetchData(function(err,results) {
 		if(err)
 		{
@@ -142,35 +132,26 @@ exports.addUser = function(req, res){
 		{
 			if(results[0].cnt > 0)
 			{
-				
 				validRegistration = setValidregistrationUserExists(validRegistration);
-				console.log(validRegistration.flag+' '+validRegistration.message);
 				res.send(validRegistration);
 			}
 			else
 			{
-								
 				mysql.updateData(function(err,results) {
 					if(err)
 					{
-						
-						validRegistration = setValidregistrationFalse(validRegistration);
-						console.log(validRegistration.flag+' '+validRegistration.message);
+						validRegistration = setValidregistrationFalse(validRegistration);	
 						res.send(validRegistration);
 						throw err;
 					}
 					else
 					{
-						
 						validRegistration = setValidregistrationUserAdded(validRegistration);
-						console.log(validRegistration.flag+' '+validRegistration.message);
 						res.send(validRegistration);
 					}
 				}, getInsertQuery(username,password,FirstName,LastName,Telephone));
-
 			}
 		}
-	}, getUserQuery(username));
-	
-	
-};
+	}, getUserQuery(username));	
+};*/
+
