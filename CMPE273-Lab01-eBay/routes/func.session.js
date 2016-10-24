@@ -4,12 +4,10 @@
  * @Description : 	contains functions related to session management.
  * @returns 	: 	
  * @functions	: 	setSession
- * 					
+ * 					sessionDestroy
+ *  				setSessionCart	
  */
-
-
 exports.setSession = function(req,username){
-	console.log("Setting session");
 	req.session.username = username;
 }
 
@@ -21,13 +19,11 @@ exports.getSession = function(req,res){
 		sessionValidity.sessionUser = req.session.username;
 		res.send(sessionValidity);
 	}
-		
 	else
 	{
 		res.send(sessionValidity);
 	}
 }
-
 
 exports.sessionDestroy = function(req,res)
 {
@@ -41,11 +37,8 @@ exports.sessionDestroy = function(req,res)
 		response = {flag : false}
 		res.send(response);
 	}
-	
-
 };
 
 exports.setSessionCart = function(req){
-	
 	req.session.cart = [];
 }
