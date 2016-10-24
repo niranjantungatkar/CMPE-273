@@ -3,9 +3,6 @@ var db;
 var connected = false;
 
 
-
-
-
 exports.connect = function(url, callback){    
 	MongoClient.connect(url, function(err, _db){       
 		if (err) { 

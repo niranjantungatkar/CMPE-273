@@ -9,13 +9,14 @@
 
 
 exports.setSession = function(req,username){
+	console.log("Setting session");
 	req.session.username = username;
 }
 
 exports.getSession = function(req,res){
 	var sessionValidity = {"validFlag": false, "sessionUser" : null};
 	if(req.session.username)
-	{
+	{	
 		sessionValidity.validFlag = true;
 		sessionValidity.sessionUser = req.session.username;
 		res.send(sessionValidity);

@@ -27,11 +27,11 @@ var getPoolConnection = function(callback){
 	if(connectionQueue.length > 0)
 	{
 		var connection = connectionQueue.pop();
-		console.log("Using connection : "+connection.id);
+		
 		callback(connection, null);
 	}
 	else if(connectionQueue.length <= 0){
-		console.log("Putting function in wait Queue");
+		
 		requestQueue.push(callback);
 	}
 }
@@ -43,8 +43,7 @@ setInterval(function(){
 		{
 			var connection = connectionQueue.pop();
 			var callback = requestQueue.shift();
-			console.log("Executing function from the wait queue");
-			console.log("Connection ID : "+connection.id);
+			
 			callback(connection, null);
 		}
 	}
@@ -52,7 +51,7 @@ setInterval(function(){
 
 function releasePoolConnection(connection)
 {
-	console.log("Releasing Connection : "+connection.id)
+	
 	connectionQueue.push(connection);
 }
 
@@ -81,7 +80,7 @@ function fetchData(callback,sqlQuery)
 	connection.end();*/
 	/////////////////////////////////////////////////var getPoolConnection	
 	
-	console.log("\nSQL Query::"+sqlQuery); 
+	//console.log("\nSQL Query::"+sqlQuery); 
 
 	getPoolConnection(function (PoolConnection, err){
 		PoolConnection.connection.query(sqlQuery, function(err, rows, fields) {
@@ -91,10 +90,8 @@ function fetchData(callback,sqlQuery)
 			} 
 			else 
 			{ 
-				// return err or result 
-				console.log("DB Results:"+rows);
 				callback(err, rows); 	
-				console.log("\nConnection closed..");
+				
 				setTimeout(function (){
 					releasePoolConnection(PoolConnection);
 				},2000);
@@ -128,18 +125,13 @@ function updateData(callback,sqlQuery)
 		} 
 		else 
 		{ 
-			// return err or result 
-			console.log("DB Results:"+rows);
 			callback(err, rows); 
 		}
 	});
 	
-	console.log("\nConnection closed.."); 
+	 
 	connection.end();
 }
-
-
-
 
 exports.fetchData = fetchData;
 exports.updateData = updateData;

@@ -11,13 +11,13 @@
  * 					getInvalidLogin
  * 					getValidLogin
  */
-
-
 var mysql = require('./util.database');
 var session = require('./func.session');
 var dateFormat = require('dateformat');
 var crypto = require('crypto');
-var algorithm = 'aes-256-ctr'
+var algorithm = 'aes-256-ctr';
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
 
 function getUserQuery(username, password)
 {
@@ -57,7 +57,59 @@ function encrypt(password)
 	return cipher;
 }
 
-exports.checkValidLogin = function(req, res){
+
+module.exports = function(passport) {
+    passport.use('signin', new LocalStrategy(function(username, password, done) {
+    
+    var validLogin = { "flag" : false, "username" : null};
+   
+    var encrpassword = encrypt(password);
+    
+    var userQuery = getUserQuery(username,encrpassword);
+    
+	mysql.fetchData(function(err,results) {
+		
+		if(err)
+		{
+			done(err,false);
+		}
+		else
+		{
+			if(results[0].cnt == 1)
+			{
+				
+				getValidLogin(validLogin, username);
+								
+				mysql.updateData(function(err, results) {
+					if(err)
+					{
+						console.log('Not able to update the last Login');
+					}
+					else
+					{
+						console.log('Last Login updated!');
+					}
+					
+				}, getLastLoginUpdateQuery(username));
+				
+				done(null, validLogin.username);
+				
+			}
+			else
+			{
+				done(null, false);
+			}
+		}
+	}, userQuery);       
+        
+}));
+    
+    
+}
+  
+
+
+/*exports.checkValidLogin = function(req, res, next){
 	
 	var validLogin = { "flag" : false, "username" : null};
 	
@@ -107,4 +159,4 @@ exports.checkValidLogin = function(req, res){
 			}
 		}
 	}, userQuery);
-};
+};*/
