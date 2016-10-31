@@ -111,6 +111,7 @@ $scope.checkoutBidProduct = function(){
 				url : '/bidcheckout',
 				data : {
 					"product_id" : $scope.product_id,
+					"product_name" : $scope.product_detail.product_name,
 					"username" : $scope.user,
 					"bid_amount" : $scope.product_detail.current_bid
 				}

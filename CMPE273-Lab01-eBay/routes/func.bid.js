@@ -2,12 +2,34 @@ var mysql = require('./util.database');
 var session = require('./func.session');
 var dateFormat = require('dateformat');
 var logger = require('./util.logger');
+var mongoProductCollection = "product_detail";
+var mongoBidLogCollection = "bid_log";
+var mongoBidTransactionCollection = "bid_transaction";
+var mongo = require('./util.mongo');
+var mongoDatabaseUrl = "mongodb://localhost:27017/ebay";
 
 var cronjob = require('cron').CronJob;
 
+function getCurrentTime()
+{
+	var currTime;
+	var date = new Date();
+	currTime = dateFormat(date,"yyyy-mm-dd HH:MM:ss");
+	return currTime;
+}
+
+function getOpenBids(){
+	var conditions = {product_bid_flag : "yes", product_sold_flag : "no"};
+	return conditions;
+}
+
 var bidJob = new cronjob('30 * * * * *', function(){
 	
-		mysql.fetchData(function(err, results) {
+		mongo.connect(mongoDatabaseUrl, function(connection){
+			var collection = mongo.collection(mongoProductCollection);
+			var fields = {product_id : 1, product_name : 1,  product_bid_end_time : 1, current_bidder : 1, current_bid : 1 }
+			var query = getOpenBids();
+			collection.find(query, fields).toArray(function(err, results){
 				if(err)
 				{
 					console.log('Not able to fetch Product Data');
@@ -16,7 +38,6 @@ var bidJob = new cronjob('30 * * * * *', function(){
 				{
 					var currTime = getCurrentTime();
 					var bidEndtime;
-				
 					for(var i = 0; i< results.length; i++)
 					{
 						
@@ -24,12 +45,13 @@ var bidJob = new cronjob('30 * * * * *', function(){
 						if(bidEndtime < currTime)
 						{
 							updateBidFlag(results[i].product_id);
-							recordBidTransaction(results[i].current_bidder, results[i].product_id, results[i].current_bid);
+							recordBidTransaction(results[i].current_bidder, results[i].product_id, results[i].product_name, results[i].current_bid);
 						}
 					}
 				}
-		
-			}, getBidEndTime());
+			});	
+			
+		})
 	}, 
 	function(){
 		console.log("cronjob stopped")
@@ -41,128 +63,143 @@ var bidJob = new cronjob('30 * * * * *', function(){
 bidJob.start();
 
 function updateBidFlag(product_id){
-	
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch Product Data');
-		}
 
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection(mongoProductCollection);
+		collection.update({product_id : parseInt(product_id)}, {$set : {product_sold_flag : "yes"}}, function(err, num, status){
+	   		if(err)
+	   		{
+	   			console.log("Error in updation")
+	   		}
+	   	});
+	});
+}
+
+
+
+function recordBidTransaction(bidder, product_id, product_name, bid_amount){
+	
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection("user_detail");
+		var counterBidTransaction = mongo.collection("counterBidTransaction");
 		
-	}, getUpdateBidFlagQuery(product_id));
-}
-
-function getUpdateBidFlagQuery(product_id){
-	var query = "update product_detail set product_sold_flag = 'yes' where product_id = '"+product_id+"'";
-	return query
-}
-
-function recordBidTransaction(bidder, product_id, bid_amount){
+		counterBidTransaction.findAndModify(
+			{_id:"bidtrans_id"},
+			[],
+			{$inc:{sequence_value:1}}, 
+			{new : true},
+			function(err,doc){
+				if(err)
+				{
+					console.log("Unsuccessful Transaction");
+					response = { valid: false, product_id: null, message : null}
+				}	
+				else
+				{
+					collection.update({username : bidder },{ $push : { bidswon : {
+						trans_id : doc.value.sequence_value,
+						trans_type : 3, 
+						username : bidder, 
+						product_id: product_id, 
+						product_name : product_name,
+						trans_amount : bid_amount, 
+						product_quantity : 1, 
+						trans_time: getCurrentTime(), 
+						paid_flag : "N"}
+						}},
+						function(err, records){
+							if(err)
+							{
+								response = { valid: false, product_id: null, message : null}
+							}
+							else
+							{
+								response = { valid: true, product_id: null, message : null};	
+							}
+					});
+				}	
+			}
+		);
+	});
 	
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch Product Data');
-		}
-
-		
-	}, gettransactionQuery(bidder, product_id, bid_amount));
 	
-}
-
-function gettransactionQuery(username, product_id, bid_amount)
-{
-	var transactionQuery = "INSERT INTO bid_transaction (trans_id, trans_type, username,product_id, trans_amount, product_quantity, trans_time,paid_flag) VALUES"+
-							"(null, '3', '"+username+"', '"+product_id+"', '"+bid_amount+"', '1', '"+getCurrentTime()+"', 'N')"
-	return transactionQuery;
-}
-
-
-function getBidEndTime(){
-	var query = "select distinct product_id, product_bid_end_time, current_bidder, current_bid from ebay.product_detail where "+
-	"product_bid_flag = 'yes' and "+
-	"product_sold_flag = 'no'";
-	return query;
-}
-
-function getCurrentTime()
-{
-	var currTime;
-	var date = new Date();
-	currTime = dateFormat(date,"yyyy-mm-dd HH:MM:ss");
-	return currTime;
-}
-
-function getProductUpdateQuery(product_id, bidder,  bidamount)
-{
-	var query = "update product_detail set current_bid = '"+bidamount+"', current_bidder = '"+bidder+"' where product_id = '"+product_id+"'";
-	return query;
 }
 
 function updateProductTable(product_id, bidder, bidamount,res)
 {
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch Product Data');
-		}
-		else
-		{
-			res.send(results[0]);
-		}
-		
-	}, getProductUpdateQuery(product_id, bidder, bidamount));
-
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection(mongoProductCollection);
+		collection.update({product_id : parseInt(product_id)}, {$set : {current_bid : parseFloat(bidamount) , current_bidder : bidder}}, function(err, num, status){
+	   		if(err)
+	   		{
+	   			console.log("Error in updation")
+	   		}
+	   	});
+	});
 }
 
-function getInsertBidInfoQuery(product_id, bidamount, bidder)
+function updateBidLog(product_id, product_name, bidamount, bidder,res)
 {
-	var query = "Insert into bid_log(bid_id, product_id, bid_amount, bidder, bid_time) values(null, '"+product_id+"', '"+bidamount+"', '"+bidder+"', '"+getCurrentTime()+"')";
+	
 	var BidLogString = product_id+" | "+bidder+" | "+bidamount+" | "+getCurrentTime()+"\n";
 	logger.writeBidInfoLog(BidLogString);
-	return query;
-}
-
-
-function updateBidLog(product_id, bidamount, bidder,res)
-{
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch Product Data');
-		}
-		else
-		{
-			res.send(results[0]);
-		}
+	
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection("user_detail");
+		var counterBidLog = mongo.collection("counterBidLog");
 		
-	}, getInsertBidInfoQuery(product_id, bidamount, bidder));
+		counterBidLog.findAndModify(
+			{_id:"bid_id"},
+			[],
+			{$inc:{sequence_value:1}}, 
+			{new : true},
+			function(err,doc){
+				if(err)
+				{
+					console.log("Unsuccessful Transaction");
+					response = { valid: false, product_id: null, message : null}
+				}	
+				else
+				{
+					collection.update({username : bidder },{ $push : { bids : {
+						bid_id : doc.value.sequence_value,
+						product_id : product_id,
+						product_name : product_name,
+						bid_amount : bidamount,
+						bidder : bidder,
+						bid_time : getCurrentTime() } } },
+						function(err, records){
+							if(err)
+							{
+								console.log("Unsuccessful Transaction");
+								response = { valid: false, product_id: null, message : null}
+								res.send(response);
+							}
+							else
+							{
+								response = { valid: true, product_id: null, message : null}
+								res.send(response);
+							}
+					});
+				}	
+			}
+		);
+	});
 
 }
 
+/*
+ * app.post('/bid',bid.enterBid);
+ * Called by - controllerBidproduct
+ */
 exports.enterBid = function (req,res){
 	var product_id = req.param('product_id');
+	var product_name = req.param('product_name');
 	var bidamount = req.param('bidamount');
 	var bidder = req.param('bidder');
 	
-	updateProductTable(product_id, bidder, bidamount,res);
-	updateBidLog(product_id, bidamount, bidder,res);
-}
-
-
-
-function update_bid_transaction(product_id, username)
-{
-	var query = "update bid_transaction set paid_flag = 'Y' where product_id = '"+product_id+"' and username = '"+username+"'";
-	return query;
-}
-
-
-function update_transaction_detail(username, product_id, bid_amount)
-{
-	var transactionQuery = "INSERT INTO transaction_detail (trans_id, trans_type, username,product_id, trans_amount, product_quantity, trans_time) VALUES"+
-							"(null, '3', '"+username+"', '"+product_id+"', '"+bid_amount+"', '1', '"+getCurrentTime()+"')"
-	return transactionQuery;
+	updateProductTable(product_id,bidder, bidamount,res);
+	updateBidLog(product_id,product_name, bidamount, bidder,res);
 }
 
 
@@ -171,34 +208,54 @@ exports.checkout = function(req,res)
 {
 	var username = req.param('username');
 	var product_id = req.param('product_id');
+	var product_name = req.param('product_name');
 	var bid_amount = req.param('bid_amount');
+
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection("user_detail");
+		collection.update({username : username}, {$pull : {bidswon : { product_id : parseInt(product_id)}}}, function(err, num, status){
+	   		if(err)
+	   		{
+	   			console.log("Error in updation")
+	   		}
+	   	});
+	});
 	
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch Product Data');
-		}
-		else
-		{
-			res.send(results[0]);
-		}
-		
-	}, update_bid_transaction(product_id, username));
-	
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch Product Data');
-		}
-		else
-		{
-			res.send(results[0]);
-		}
-		
-	}, update_transaction_detail(username, product_id, bid_amount));
-	
-	
-	
+	mongo.connect(mongoDatabaseUrl, function(connection){
+	var counterTransaction = mongo.collection("counterTransaction");
+	var collection = mongo.collection("user_detail");
+	counterTransaction.findAndModify(
+			{_id:"transaction_id"},
+			[],
+			{$inc:{sequence_value:1}}, 
+			{new : true},
+			function(err,doc){
+				if(err)
+				{
+					console.log("Unsuccessful Transaction");
+					response = { valid: false, product_id: null, message : null}
+				}	
+				else
+				{
+					collection.update({username : username },{ $push : { orders : {trans_id : doc.value.sequence_value,
+						trans_type : 3,
+						username : username,
+						product_id : product_id,
+						product_name : product_name,
+						trans_amount : bid_amount,
+						product_quantity : 1,
+						trans_time : getCurrentTime() } } },
+						function(err, records){
+							if(err)
+							{
+								console.log("Unsuccessful Transaction");
+								response = { valid: false, product_id: null, message : null}
+							}
+					});
+				}	
+			}
+		);
+	});
 }
 
 

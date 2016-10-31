@@ -1,6 +1,9 @@
 var mysql = require('./util.database');
 var session = require('./func.session');
 var dateFormat = require('dateformat');
+var mongo = require('./util.mongo');
+var mongoDatabaseUrl = "mongodb://localhost:27017/ebay";
+var mongoCollection = "product_detail"
 
 function getCurrentTime()
 {
@@ -11,108 +14,75 @@ function getCurrentTime()
 }
 
 
-function getProductQuery(product_id)
+function updateQuantity(product_id, product_quantity)
 {
-	var productQuery = "select product_quantity from product_detail where product_id='"+product_id+"'";
-	return productQuery;
-}
-
-function getUpdateQuery(product_id, new_quantity)
-{
-	var producUpdateQuery = "update product_detail set product_quantity ='"+new_quantity+"' where product_id ='"+product_id+"'";
-	return productUpdateeQuery;
-}
-
-
-function checkValidity(product_id, product_quantity,res)
-{
-	var act_product_quantity = 0;
-	var response = {flag : false, product_id : null, message : null}
-	var flag = true;
-	
-	/*mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to update the last Login');
-		}
-		else
-		{
-			act_product_quantity = results[0].product_quantity;
-			if(act_product_quantity < product_quantity )
-			{	
-				response.flag = false
-				response.product_id  = product_id;
-				message = "Quantity available in the Stock is less than than the Quantiyt in the Cart"
-				flag = false;
-				//res.send(response);
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection(mongoCollection);
+		var query = {product_id : parseInt(product_id)};
+		var fields = {product_quantity : 1}
+		collection.findOne(query, fields, function(err, productDetails){	
+			if(err)
+			{
+				console.log('Not able to fetch Product Data');
 			}
 			else
 			{
-				console.log("valid");
-				return true;
+				var act_quantity = productDetails.product_quantity;
+			   	var new_quantity = parseInt(act_quantity) - parseInt(product_quantity);
+			   	collection.update({product_id : parseInt(product_id)}, {$set : {product_quantity : new_quantity}}, function(err, num, status){
+			   		if(err)
+			   		{
+			   			console.log("Error in updation")
+			   		}
+			   	});
 			}
-				
-		}
-		
-	}, getProductQuery(product_id));*/
-
+		});
+	});
 }
 
-function updateQuantity(product_id, product_quantity)
-{
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to update the last Login');
-		}
-		else
-		{
-			var act_quantity = results[0].product_quantity;
-			var new_quantity = parseFloat(act_quantity) - parseFloat(product_quantity);
-			console.log("Product id : "+product_id+" New :"+new_quantity+" act :"+act_quantity+" product : "+product_quantity);
-			
-			mysql.fetchData(function(err,results){
-				if(err)
-				{
-					console.log("Product not updated");
-				}
-				else
-				{
-					console.log("product Updated")
-				}
-			},getUpdateQuery(product_id, new_quantity));
-			
-			
-		}
-	},getProductQuery(product_id));
-	
-}
 
-function getUpdateQuery(product_id, new_quantity)
-{
-	var updQuery = "UPDATE product_detail SET product_quantity='"+new_quantity+"' WHERE product_id='"+product_id+"'";
-	return updQuery;
-}
-
-function gettransactionQuery(cart, username)
-{
-	var transactionQuery = "INSERT INTO transaction_detail (trans_id, trans_type, username,product_id, trans_amount, product_quantity, trans_time) VALUES"+
-							"(null, '1', '"+username+"', '"+cart.product_id+"', '"+cart.product_price+"', '"+cart.product_quantity+"', '"+getCurrentTime()+"')"
-	return transactionQuery;
-}
 
 function recordTransaction(cart,username){
 
-		mysql.fetchData(function(err,results){
-			if(err)
-			{
-				console.log("Product not updated");
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection("user_detail");
+		var counterTransaction = mongo.collection("counterTransaction");
+		
+		counterTransaction.findAndModify(
+			{_id:"transaction_id"},
+			[],
+			{$inc:{sequence_value:1}}, 
+			{new : true},
+			function(err,doc){
+				if(err)
+				{
+					console.log("Unsuccessful Transaction");
+					response = { valid: false, product_id: null, message : null}
+				}	
+				else
+				{
+					collection.update({username : username},{ $push : { orders : {
+						trans_id : doc.value.sequence_value,
+						trans_type : 1,
+						username : username,
+						product_id : cart.product_id,
+						product_name : cart.product_name,
+						trans_amount : cart.product_price,
+						product_quantity : cart.product_quantity,
+						trans_time : getCurrentTime()} } },
+						function(err, records){
+							if(err)
+							{
+								console.log("Unsuccessful Transaction : "+err);
+								response = { valid: false, product_id: null, message : null}
+							}
+					});
+				}	
 			}
-			else
-			{
-				console.log("product Updated")
-			}
-		},gettransactionQuery(cart,username));
+		);
+	});
+	
+	
 	
 }
 
@@ -120,30 +90,24 @@ exports.checkout = function(req,res){
 	
 	var response = { valid: false, product_id: null, message : null}
 	var cart = req.param('cart');
-	
 	var username = req.session.username;
 	
 	for(var i = 0; i < cart.length; i++)
 	{
-		
 		updateQuantity(cart[i].product_id, cart[i].product_quantity);
 		recordTransaction(cart[i],username);
 	}
 	response = { valid: true, product_id: null, message : null}
 	req.session.cart = [];
-	
 	res.send(response);
 }
 
 
 exports.removeFromCart = function(req,res){
 	var product_id = req.param('product_id');
-	
 	var response = { flag : false, message : null};
-	
 	try
 	{
-		
 		if(req.session.cart)
 		{
 			for(var i =0; i< req.session.cart.length ; i++)
@@ -159,8 +123,7 @@ exports.removeFromCart = function(req,res){
 				else
 				{
 					continue;
-				}
-					
+				}				
 			}
 		}
 		else

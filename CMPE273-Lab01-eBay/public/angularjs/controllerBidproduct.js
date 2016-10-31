@@ -43,6 +43,7 @@ eBayApp.controller('controllerBidproduct', function($scope,$http, $log, $state,u
 				url : '/bid',
 				data : {
 					"product_id" : $scope.product_id,
+					"product_name" : $scope.product_detail.product_name,
 					"bidamount" : $scope.bidamount,
 					"bidder" : $scope.user
 				}

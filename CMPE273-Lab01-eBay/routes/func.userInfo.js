@@ -1,42 +1,55 @@
 var mysql = require('./util.database');
 var session = require('./func.session');
 var dateFormat = require('dateformat');
-
-function getLastLoginQuery(username)
-{
-	var userQuery = "SELECT last_login lstlgn FROM user_detail where username = '"+username+"'";
-			
-	return userQuery;
-}
+var mongo = require('./util.mongo');
+var mongoDatabaseUrl = "mongodb://localhost:27017/ebay";
+var mongoCollection = "product_detail";
 
 
-function getUserDetailQuery(username)
-{
-	var userDetailQuery = "SELECT first_name, last_name, birthday, about, telephone, location FROM ebay.user_detail where username='"+username+"'";
-			
-	return userDetailQuery;
+exports.getsoldproducts = function (req,res){
+	var username = req.param('username');
+	var response = {flag : false, items : null}
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection(mongoCollection);
+		collection.find({product_adv : username}, {product_name : 1,product_sold_flag : 1, current_bidder : 1, current_bid : 1}).toArray(function(err, results){
+			if(err)
+			{
+				console.log('Not able to fetch User data');
+				response = {flag : false, items : null}
+				res.send(response);
+			}
+			else
+			{
+				response = {flag : true, items : results}
+				res.send(response);
+			}
+		});
+	});
 }
 
 
 exports.getUserInfo = function(req,res){
 	var response = {flag : false, last_login : null, sale : {}, bought : {}};
-	
 	if(req.session.username)
 	{
-		mysql.fetchData(function(err, results) {
-			if(err)
-			{
-				console.log('Not able to fetch User data');
-			}
-			else
-			{
-				response.flag = true;
-				var date = new Date(results[0].lstlgn);
-				response.last_login = dateFormat(date,"yyyy-mm-dd HH:MM:ss");
-				res.send(response)
-			}
-			
-		}, getLastLoginQuery(req.session.username));
+		mongo.connect(mongoDatabaseUrl, function(connection){
+			var collection = mongo.collection("user_detail");
+			collection.findOne({username : req.session.username}, {last_login : 1}, function(err, results){
+				if(err)
+				{
+					console.log('Not able to fetch User data');
+					response = {flag : false, items : null}
+					res.send(response);
+				}
+				else
+				{
+					response.flag = true;
+					var date = new Date(results.last_login);
+					response.last_login = dateFormat(date,"yyyy-mm-dd HH:MM:ss");
+					res.send(response);
+				}
+			});
+		});
 	}
 	else
 	{
@@ -44,27 +57,29 @@ exports.getUserInfo = function(req,res){
 	}
 }
 
-
-
 exports.getUserDetails = function(req,res){
 	var response = {flag : false, message: null, user_det : {}};
 	var username = req.param('username');
-	
 	if(req.session.username)
 	{
-		mysql.fetchData(function(err, results) {
-			if(err)
-			{
-				console.log('Not able to fetch User data');
-			}
-			else
-			{
-				response.flag = true;
-				response.message = null;
-				response.user_det = results[0];
-				res.send(response);
-			}
-		}, getUserDetailQuery(username));
+		mongo.connect(mongoDatabaseUrl, function(connection){
+			var collection = mongo.collection("user_detail");
+			collection.findOne({username : req.session.username}, {first_name : 1,last_name : 1, birthday :1, about:1, telephone: 1, location:1, handle : 1}, function(err, results){
+				if(err)
+				{
+					console.log('Not able to fetch User data');
+					response = {flag : false, items : null}
+					res.send(response);
+				}
+				else
+				{
+					response.flag = true;
+					response.message = null;
+					response.user_det = results;
+					res.send(response);
+				}
+			});
+		});
 	}
 	else
 	{
@@ -72,57 +87,44 @@ exports.getUserDetails = function(req,res){
 	}
 }
 
-function getContactUpdQuery(username, telephone)
-{
-	var contactUpdQuery = "update user_detail set telephone = '"+telephone+"' where username = '"+username+"'";
-	return contactUpdQuery;
-}
 
 exports.updateContact = function(req,res){
 	var username = req.param('username');
 	var telephone = req.param('telephone');
-	
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch User data');
-		}
-		else
-		{
-			console.log("Contact updated")
-		}
-	}, getContactUpdQuery(username,telephone));
-	
-}
 
-function getLocationUpdQuery(username, location)
-{
-	var locationUpdQuery = "update user_detail set location = '"+location+"' where username = '"+username+"'";
-	return locationUpdQuery;
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection("user_detail");
+		collection.update({username : username}, {$set : {telephone : telephone}}, function(err, results){
+			if(err)
+			{
+				console.log('Not able to fetch User data');
+			}
+			else
+			{
+				console.log("Contact updated")
+			}
+		});
+	});	
 }
 
 exports.updateAddress = function (req,res){
-	
 	var username = req.param('username');
 	var location = req.param('address');
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch User data');
-		}
-		else
-		{
-			console.log("Contact updated")
-		}
-	}, getLocationUpdQuery(username,location));
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection("user_detail");
+		collection.update({username : username}, {$set : {location : location}}, function(err, results){
+			if(err)
+			{
+				console.log('Not able to fetch User data');
+			}
+			else
+			{
+				console.log("Address updated")
+			}
+		});
+	});	
 }
 
-
-function getPersonalDetUpdQuery(username, fname, lname, bday, about, handle)
-{
-	var personalDetUpdQuery = "UPDATE user_detail SET first_name='"+fname+"', last_name='"+lname+"', birthday='"+bday+"', about='"+about+"', handle = '"+handle+"' WHERE username='"+username+"'";
-	return personalDetUpdQuery;
-}
 
 exports.updatePersonalDet = function (req,res){
 	var username = req.param('username');
@@ -131,125 +133,89 @@ exports.updatePersonalDet = function (req,res){
 	var bday = req.param('bday');
 	var about = req.param('about');
 	var handle = req.param('handle');
-	console.log(bday);
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch User data');
-		}
-		else
-		{
-			console.log("Contact updated")
-		}
-	}, getPersonalDetUpdQuery(username, fname, lname, bday, about, handle));
-	
-}
-
-function getSoldProductQuery(username)
-{
-	var itmforsaleQuery = "SELECT product_name, product_sold_flag, current_bidder, current_bid FROM ebay.product_detail where product_adv = '"+username+"'";
-							
-	return itmforsaleQuery;
-}
-
-
-exports.getsoldproducts = function (req,res){
-	var username = req.param('username');
-	var response = {flag : false, items : null}
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch User data');
-			response = {flag : false, items : null}
-			res.send(response);
-		}
-		else
-		{
-			response = {flag : true, items : results}
-			res.send(response);
-		}
-	}, getSoldProductQuery(username));
-}
-
-function getBoughtProductQuery(username)
-{
-	var itmboughtQuery = "SELECT prd.product_name, trd.product_quantity, trd.trans_amount FROM ebay.transaction_detail trd, ebay.product_detail prd"+ 
-	" where trd.product_id = prd.product_id"+
-	" and trd.trans_type in (1, 3)"+
-	" and trd.username = '"+username+"'"	
-	return itmboughtQuery;
+	mongo.connect(mongoDatabaseUrl, function(connection){
+		var collection = mongo.collection("user_detail");
+		collection.update({username : username}, {$set : {first_name : fname, last_name : lname, birthday : bday, about : about, handle : handle}}, function(err, results){
+			if(err)
+			{
+				console.log('Not able to fetch User data');
+			}
+			else
+			{
+				console.log("Personal Data updated")
+			}
+		});
+	});		
 }
 
 exports.getboughtproducts = function (req, res){
 	var username = req.param('username');
-	var response = {flag : false, items : null}
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch User data');
-			response = {flag : false, items : null}
-			res.send(response);
-		}
-		else
-		{
-			response = {flag : true, items : results}
-			res.send(response);
-		}
-	}, getBoughtProductQuery(username));
+	var response = {flag : false, items : null};
+	mongo.connect(mongoDatabaseUrl,function(connection){
+		var collection = mongo.collection("user_detail");
+		collection.findOne({username : username},{orders : 1},function(err, results){
+			if(err)
+			{
+				console.log('Not able to fetch User data');
+				response = {flag : false, items : null}
+				res.send(response);
+			}
+			else
+			{
+				console.log("Check results: "+results);
+				response = {flag : true, items : results.orders}
+				res.send(response);
+			}
+		});
+	});
 }
 
 
-function getUserbidDetailsQuery(username)
-{
-	var userDetailQuery = "select prd.product_id, prd.product_name, bid.trans_amount as bid_amount from ebay.product_detail prd, ebay.bid_transaction bid "+
-	"where prd.product_id = bid.product_id "+
-	"and bid.username = '"+username+"' and "+
-	"paid_flag = 'N'";
-			
-	return userDetailQuery;
-}
-
+//app.post('/userbids', userinfo.returnUserBidDetails);
 exports.returnUserBidDetails = function(req,res)
 {
-	
 	var username = req.param('username');
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch User data');
-			response = {flag : false, items : null}
-			res.send(response);
-		}
-		else
-		{
-			response = {flag : true, items : results}
-			res.send(response);
-		}
-	}, getUserbidDetailsQuery(username));
-
+	mongo.connect(mongoDatabaseUrl,function(connection){
+		var collection = mongo.collection("user_detail");
+		collection.findOne({username : username},{bidswon : 1},function(err, results){
+			if(err)
+			{
+				console.log('Not able to fetch User data');
+				response = {flag : false, items : null}
+				res.send(response);
+			}
+			else
+			{
+				console.log("Check results: "+results);
+				response = {flag : true, items : results.bidswon}
+				res.send(response);
+			}
+		});
+	});
 }
 function getTotalUserbidDetailsQuery(username){
 	var userDetailQuery = "select prd.product_id, prd.product_name, bid.bid_amount, bid.bid_time from ebay.product_detail prd, ebay.bid_log bid "+
-	"where bid.bidder = '"+username+"' and prd.product_id = bid.product_id";
-	
-	
-			
+	"where bid.bidder = '"+username+"' and prd.product_id = bid.product_id";		
 	return userDetailQuery;
 }
 
 exports.returnTotalUserBidDetails = function(req,res){
 	var username = req.param('username');
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch User data');
-			response = {flag : false, items : null}
-			res.send(response);
-		}
-		else
-		{
-			response = {flag : true, items : results}
-			res.send(response);
-		}
-	}, getTotalUserbidDetailsQuery(username));
+	mongo.connect(mongoDatabaseUrl,function(connection){
+		var collection = mongo.collection("user_detail");
+		collection.findOne({username : username},{bids : 1},function(err, results){
+			if(err)
+			{
+				console.log('Not able to fetch User data');
+				response = {flag : false, items : null}
+				res.send(response);
+			}
+			else
+			{
+				response = {flag : true, items : results.bids}
+				res.send(response);
+			}
+		});
+	});
+	
 }

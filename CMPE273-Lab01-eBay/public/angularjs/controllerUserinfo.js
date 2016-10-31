@@ -20,7 +20,6 @@ eBayApp.controller('controllerUserinfo', function($scope,$http, $log, $state, us
 	}).success(function(data) {
 		if(data.flag == true)
 		{
-			
 			$scope.userLastLogin = data.last_login;
 		}
 	}).error(function(error) {

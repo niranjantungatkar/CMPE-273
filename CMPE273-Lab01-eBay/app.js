@@ -72,24 +72,25 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 
 //app.post('/signin',signin.checkValidLogin);
-app.post('/signin',function(req, res, next) {
-	  passport.authenticate('signin', function(err, user) {
-		console.log("App js : "+user);
-		if(err)
-		{	
-			res.send({"flag" : false, "username":null});  
-		} 
-		if(user == false)
+app.post('/signin',function(req, res, next) 
+	{
+		passport.authenticate('signin', function(err, user) 
 		{
-			res.send({"flag" : false, "username":null});
-		}
-		else
-		{
-			utilSession.setSession(req, user);
-			res.send({"flag" : true, "username":user});
-		}
-	  })(req, res, next);
-});
+			if(err)
+			{	
+				res.send({"flag" : false, "username":null});  
+			} 
+			if(user == false)
+			{
+				res.send({"flag" : false, "username":null});
+			}
+			else
+			{
+				utilSession.setSession(req, user);
+				res.send({"flag" : true, "username":user});
+			}
+		})(req, res, next);
+	});
 app.post('/register',register.addUser);
 app.post('/addproduct',addProduct.insertproduct);
 app.post('/products',product.returnProductdetails);

@@ -11,13 +11,28 @@
  * 					getInvalidLogin
  * 					getValidLogin
  */
+
+
+/*
+ * Miscellaneous
+ */
 var mysql = require('./util.database');
 var session = require('./func.session');
 var dateFormat = require('dateformat');
 var crypto = require('crypto');
 var algorithm = 'aes-256-ctr';
+/*
+ * Passport
+ */
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
+/*
+ * Mongo
+ */
+var mongo = require('./util.mongo');
+var mongoDatabaseUrl = "mongodb://localhost:27017/ebay";
+var mongoCollection = "user_detail";
+
 
 function getUserQuery(username, password)
 {
@@ -54,21 +69,51 @@ function getValidLogin(validLogin, username){
 function encrypt(password)
 {
 	var cipher = crypto.createCipher(algorithm, password);
-	return cipher;
+	var crypted = cipher.update(password,'utf8','hex')
+	crypted += cipher.final('hex');
+	return crypted;
 }
 
-
 module.exports = function(passport) {
-    passport.use('signin', new LocalStrategy(function(username, password, done) {
+	passport.use('signin', new LocalStrategy(function(username, password, done) 
+	{		
+		var validLogin = { "flag" : false, "username" : null};
+        var encrpassword = encrypt(password);
+        var currTime = getCurrentTime();
     
-    var validLogin = { "flag" : false, "username" : null};
-   
-    var encrpassword = encrypt(password);
-    
-    var userQuery = getUserQuery(username,encrpassword);
-    
-	mysql.fetchData(function(err,results) {
-		
+        mongo.connect(mongoDatabaseUrl, function(connection)
+        {
+   			var collection = mongo.collection(mongoCollection);
+   			collection.findOne({username : username, password : encrpassword}, function(err, userDetails)
+   			{	
+   				if(err)
+   				{
+   					done(err,false);
+   				}
+   				else
+   				{
+   					if(userDetails != null && userDetails != undefined && userDetails != "")
+   					{
+   						if(userDetails.username != null || userDetails.username != undefined || userDetails.username != "")
+   						{
+   							collection.update({username : userDetails.username}, {
+   								$set : {
+   									last_login : currTime 
+   								}
+   							});
+   							done(null, userDetails.username);
+   						}
+   						else
+   							done(null, false);
+   					}
+   					else
+   					{   						
+   						done(null, false);
+   					}			
+   				}
+   			});			
+   		})
+   		/*mysql.fetchData(function(err,results) {
 		if(err)
 		{
 			done(err,false);
@@ -77,9 +122,7 @@ module.exports = function(passport) {
 		{
 			if(results[0].cnt == 1)
 			{
-				
-				getValidLogin(validLogin, username);
-								
+				getValidLogin(validLogin, username);				
 				mysql.updateData(function(err, results) {
 					if(err)
 					{
@@ -89,30 +132,23 @@ module.exports = function(passport) {
 					{
 						console.log('Last Login updated!');
 					}
-					
 				}, getLastLoginUpdateQuery(username));
-				
 				done(null, validLogin.username);
-				
 			}
 			else
 			{
 				done(null, false);
 			}
 		}
-	}, userQuery);       
-        
-}));
-    
-    
+	}, userQuery);    */
+   		
+   		
+   }));    
 }
   
-
-
 /*exports.checkValidLogin = function(req, res, next){
 	
 	var validLogin = { "flag" : false, "username" : null};
-	
 	var username = req.param('username');
 	var password = encrypt(req.param('password'));
 	req.session.username = "";
@@ -128,16 +164,9 @@ module.exports = function(passport) {
 		{
 			if(results[0].cnt == 1)
 			{
-				
-				
-				//Initialize the session
-				session.setSession(req, username);
-				
-				//get validLogin object
-				getValidLogin(validLogin, username);
-								
-				//Update the last login of the user
-				mysql.updateData(function(err, results) {
+				session.setSession(req, username);							//Initialize the session
+				getValidLogin(validLogin, username);						//get validLogin object				
+				mysql.updateData(function(err, results) {					//Update the last login of the user
 					if(err)
 					{
 						console.log('Not able to update the last Login');
@@ -145,17 +174,13 @@ module.exports = function(passport) {
 					else
 					{
 						console.log('Last Login updated!');
-					}
-					
+					}		
 				}, getLastLoginUpdateQuery(username));
-				//send the valid response back
-				res.send(validLogin);
+				res.send(validLogin);										//send the valid response back
 			}
 			else
 			{
-				
-				//send invalid login response back
-				res.send(getInvalidLogin(validLogin));
+				res.send(getInvalidLogin(validLogin));						//send invalid login response back
 			}
 		}
 	}, userQuery);

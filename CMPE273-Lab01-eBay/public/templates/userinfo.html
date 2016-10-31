@@ -62,7 +62,7 @@
 				<td>{{itmbght.product_name}}</td>
 				<td></td>
 				<td>{{itmbght.product_quantity}}</td>
-				<td>{{itmbght.trans_amount}}</td>
+				<td><strong>${{itmbght.trans_amount}}</strong></td>
 			</tr>
 		</tbody>	
 	</table>
@@ -83,7 +83,7 @@
 			<tr ng-repeat = "tbid in totaluserbids">
 				<td>{{tbid.product_name}}</td>
 				<td></td>
-				<td>{{tbid.bid_amount}}</td>
+				<td><strong>${{tbid.bid_amount}}</strong></td>
 				<td>{{tbid.bid_time}}</td>
 			</tr>
 		</tbody>	
@@ -106,7 +106,7 @@
 			<tr ng-repeat = "bid in userbids">
 				<td>{{bid.product_name}}</td>
 				<td></td>
-				<td>{{bid.bid_amount}}</td>
+				<td><strong>${{bid.trans_amount}}</strong></td>
 				<td><button name="usrBuyBut" value="BidBuy" id="usrBuyBut" class="btn btn-primary" ng-click="buyBidProduct(bid.product_id)">Pay</button></td>
 			</tr>
 		</tbody>	

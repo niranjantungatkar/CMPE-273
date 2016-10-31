@@ -59,7 +59,12 @@ eBayApp.controller('controllerProfile', function($scope,$http, $log, $state,user
 			if($scope.userDet.about == null)
 				$scope.about = "";
 			else
-				$scope.about = $scope.userDet.about		
+				$scope.about = $scope.userDet.about	
+				
+			if($scope.userDet.handle == null)
+				$scope.handle = "";
+			else
+				$scope.handle = $scope.userDet.handle		
 			
 			
 		}
