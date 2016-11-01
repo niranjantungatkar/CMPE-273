@@ -32,13 +32,7 @@ var LocalStrategy = require("passport-local").Strategy;
 var mongo = require('./util.mongo');
 var mongoDatabaseUrl = "mongodb://localhost:27017/ebay";
 var mongoCollection = "user_detail";
-
-
-function getUserQuery(username, password)
-{
-	var userQuery = "select count(1) cnt from user_detail where username='"+username+"'and password='"+password+"'";
-	return userQuery;
-}
+var mq_client = require('../rpc/client');
 
 function getCurrentTime()
 {
@@ -46,24 +40,6 @@ function getCurrentTime()
 	var date = new Date();
 	currTime = dateFormat(date,"yyyy-mm-dd HH:MM:ss");
 	return currTime;
-}
-
-function getLastLoginUpdateQuery(username)
-{
-	var lastLoginQuery = "update user_detail set last_login = '"+getCurrentTime()+"' where username = '"+username+"'";
-	return lastLoginQuery;
-}
-
-function getInvalidLogin(validLogin){
-	validLogin.flag = false;
-	validLogin.username = null;
-	return validLogin;
-}
-
-function getValidLogin(validLogin, username){
-	validLogin.flag = true;
-	validLogin.username = username;
-	return validLogin;
 }
 
 function encrypt(password)
@@ -77,111 +53,56 @@ function encrypt(password)
 module.exports = function(passport) {
 	passport.use('signin', new LocalStrategy(function(username, password, done) 
 	{		
+		console.log("In passport authenticate");
 		var validLogin = { "flag" : false, "username" : null};
         var encrpassword = encrypt(password);
         var currTime = getCurrentTime();
-    
+        
+        
         mongo.connect(mongoDatabaseUrl, function(connection)
-        {
-   			var collection = mongo.collection(mongoCollection);
-   			collection.findOne({username : username, password : encrpassword}, function(err, userDetails)
-   			{	
-   				if(err)
-   				{
-   					done(err,false);
-   				}
-   				else
-   				{
-   					if(userDetails != null && userDetails != undefined && userDetails != "")
-   					{
-   						if(userDetails.username != null || userDetails.username != undefined || userDetails.username != "")
-   						{
-   							collection.update({username : userDetails.username}, {
-   								$set : {
-   									last_login : currTime 
-   								}
-   							});
-   							done(null, userDetails.username);
-   						}
-   						else
-   							done(null, false);
-   					}
-   					else
-   					{   						
-   						done(null, false);
-   					}			
-   				}
-   			});			
-   		})
-   		/*mysql.fetchData(function(err,results) {
-		if(err)
-		{
-			done(err,false);
-		}
-		else
-		{
-			if(results[0].cnt == 1)
-			{
-				getValidLogin(validLogin, username);				
-				mysql.updateData(function(err, results) {
-					if(err)
-					{
-						console.log('Not able to update the last Login');
-					}
-					else
-					{
-						console.log('Last Login updated!');
-					}
-				}, getLastLoginUpdateQuery(username));
-				done(null, validLogin.username);
-			}
-			else
-			{
-				done(null, false);
-			}
-		}
-	}, userQuery);    */
-   		
-   		
+                {
+           			var collection = mongo.collection(mongoCollection);
+           			collection.findOne({username : username, password : encrpassword}, function(err, userDetails)
+           			{	
+           				if(err)
+           				{
+           					done(err,false);
+           				}
+           				else
+           				{
+           					if(userDetails != null && userDetails != undefined && userDetails != "")
+           					{
+           						if(userDetails.username != null || userDetails.username != undefined || userDetails.username != "")
+           						{
+           							collection.update({username : userDetails.username}, {
+           								$set : {
+           									last_login : currTime 
+           								}
+           							});
+           							done(null, userDetails.username);
+           						}
+           						else
+           							done(null, false);
+           					}
+           					else
+           					{   						
+           						done(null, false);
+           					}			
+           				}
+           			});			
+           		})
+          		
+      
+    	/*mq_client.make_request('signin_queue',msg_payload, function(err,userDetails){
+    		console.log("Making request");
+    		if(err){
+    			done(true, false);
+    		}
+    		else 
+    		{
+    			done(null, userDetails.user);
+    		}  
+    	});*/
    }));    
 }
   
-/*exports.checkValidLogin = function(req, res, next){
-	
-	var validLogin = { "flag" : false, "username" : null};
-	var username = req.param('username');
-	var password = encrypt(req.param('password'));
-	req.session.username = "";
-	var userQuery = getUserQuery(username,password);
-	
-	mysql.fetchData(function(err,results) {
-		if(err)
-		{
-			res.send(getInvalidLogin(validLogin));
-			throw err;
-		}
-		else
-		{
-			if(results[0].cnt == 1)
-			{
-				session.setSession(req, username);							//Initialize the session
-				getValidLogin(validLogin, username);						//get validLogin object				
-				mysql.updateData(function(err, results) {					//Update the last login of the user
-					if(err)
-					{
-						console.log('Not able to update the last Login');
-					}
-					else
-					{
-						console.log('Last Login updated!');
-					}		
-				}, getLastLoginUpdateQuery(username));
-				res.send(validLogin);										//send the valid response back
-			}
-			else
-			{
-				res.send(getInvalidLogin(validLogin));						//send invalid login response back
-			}
-		}
-	}, userQuery);
-};*/

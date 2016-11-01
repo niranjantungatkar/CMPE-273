@@ -30,17 +30,9 @@ var mongoStore = require("connect-mongo")(session);
 
 var app = express();
 
-//session properties
-/*app.use(session({
-	cookieName: 'session', 
-	secret: 'eBay_client_session',    
-	duration: 30 * 60 * 1000,    
-	activeDuration: 5 * 60 * 1000
-}));*/
 
 //session properties
 app.use(session({
-	//cookieName: 'session', 
 	secret: 'eBay_client_session',
 	resave : false,
 	saveUninitialized : false,
