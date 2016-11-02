@@ -62,8 +62,6 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-
-//app.post('/signin',signin.checkValidLogin);
 app.post('/signin',function(req, res, next) 
 	{
 		passport.authenticate('signin', function(err, user) 
@@ -116,6 +114,4 @@ mongo.connect(mongoSessionConnectURL, function(){
 		console.log('Express server listening on port ' + app.get('port'));  
 	});  
 });
-/*http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});*/
+

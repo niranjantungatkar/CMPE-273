@@ -57,52 +57,17 @@ module.exports = function(passport) {
 		var validLogin = { "flag" : false, "username" : null};
         var encrpassword = encrypt(password);
         var currTime = getCurrentTime();
-        
-        
-        mongo.connect(mongoDatabaseUrl, function(connection)
-                {
-           			var collection = mongo.collection(mongoCollection);
-           			collection.findOne({username : username, password : encrpassword}, function(err, userDetails)
-           			{	
-           				if(err)
-           				{
-           					done(err,false);
-           				}
-           				else
-           				{
-           					if(userDetails != null && userDetails != undefined && userDetails != "")
-           					{
-           						if(userDetails.username != null || userDetails.username != undefined || userDetails.username != "")
-           						{
-           							collection.update({username : userDetails.username}, {
-           								$set : {
-           									last_login : currTime 
-           								}
-           							});
-           							done(null, userDetails.username);
-           						}
-           						else
-           							done(null, false);
-           					}
-           					else
-           					{   						
-           						done(null, false);
-           					}			
-           				}
-           			});			
-           		})
-          		
-      
-    	/*mq_client.make_request('signin_queue',msg_payload, function(err,userDetails){
-    		console.log("Making request");
-    		if(err){
+        var msg_payload = {username : username, password : password}
+    	mq_client.make_request('signin_queue',msg_payload, function(err,result){
+    		if(result.err){
+    			throw err;
     			done(true, false);
     		}
     		else 
     		{
-    			done(null, userDetails.user);
+    			done(null, result.username);
     		}  
-    	});*/
+    	});
    }));    
 }
   

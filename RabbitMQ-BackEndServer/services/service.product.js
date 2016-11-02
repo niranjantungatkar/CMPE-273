@@ -7,6 +7,7 @@ var mongoCollection = "product_detail";
 
 exports.returnallproducts = function(message, callback){
 	
+	console.log("Return all products")
 	var query = message.query;
 	var fields = message.fields;
 	mongo.connect(mongoDatabaseUrl, function(connection)
@@ -16,10 +17,13 @@ exports.returnallproducts = function(message, callback){
 			if(err)
 			{
 				console.log('Not able to fetch Product Data');
+				console.log("Return products error : "+err)
 				callback(err, null);
+				
 			}
 			else
 			{
+				console.log("Return products no errror :"+docs)
 				callback(null,docs);
 			}
 		});	
@@ -28,6 +32,7 @@ exports.returnallproducts = function(message, callback){
 
 exports.returnallbidproducts = function(message, callback){
 	
+	console.log("Return all bid products")
 	var query = message.query;
 	var fields = message.fields;
 	mongo.connect(mongoDatabaseUrl, function(connection)
@@ -41,7 +46,11 @@ exports.returnallbidproducts = function(message, callback){
 			}
 			else
 			{
-				callback(null,docs)
+				console.log("Bid products no error : "+ docs)
+				if(docs != null || docs != undefined || docs != "")
+					callback(null,docs)
+				else
+					callback(null,{})
 			}
 		});	
 	});	

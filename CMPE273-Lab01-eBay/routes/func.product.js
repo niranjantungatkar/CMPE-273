@@ -67,6 +67,7 @@ exports.returnBidProductInfo = function(req, res){
 		}
 		else 
 		{
+			console.log("Return all bid products from server : "+ docs)
 			res.send(docs);
 		}  
 	});
@@ -113,6 +114,7 @@ exports.returnProductdetails = function(req, res){
 		}
 		else 
 		{
+			console.log("Return all products from server : "+ docs)
 			res.send(docs);
 		}  
 	});

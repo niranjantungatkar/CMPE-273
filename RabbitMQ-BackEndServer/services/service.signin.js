@@ -30,11 +30,13 @@ exports.verify_signin_details = function (msg, callback){
 		console.log("In mongo");
 			var currTime = getCurrentTime();
 			var collection = mongo.collection("user_detail");
+			console.log("Encr Password"+encrpassword);
 			collection.findOne({username : username, password : encrpassword}, function(err, userDetails)
 			{	
 				if(err)
 				{
-					done(true,false);
+					throw err;
+					//done(true,false);
 				}
 				else
 				{
@@ -47,15 +49,20 @@ exports.verify_signin_details = function (msg, callback){
 									last_login : currTime 
 								}
 							});
-							console.log("Username : "+userDetails.username)
-							callback(false, userDetails.username);
+							var res = {err : null, username : userDetails.username};
+							callback(null, res);
 						}
 						else
-							callback(true, false);
+						{
+							var res = {err : true, username : null};
+							callback(null, res);
+						}
+							
 					}
 					else
 					{   						
-						callback(true, false);
+						var res = {err : true, username : null};
+						callback(null, res);
 					}			
 				}
 			});			
