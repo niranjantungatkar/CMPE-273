@@ -3,12 +3,9 @@ product_id | username | Bid_Amount | Timestamp
 50 | niranjan.tungatkar@sjsu.edu | 1001 | 2016-10-15 17:57:06
 50 | rohan.kankapurkar@sjsu.edu | 1002 | 2016-10-15 22:49:39
 50 | niranjan.tungatkar@sjsu.edu | 1110 | 2016-10-15 22:50:52
-
 50 | niranjan.tungatkar@sjsu.edu | 1120 | 2016-10-16 19:47:28
 13 | niranjan@gmail.com | undefined | 2016-10-25 12:45:03
 13 | niranjan@gmail.com | 30 | 2016-10-25 12:46:25
-19 | [object Object] | mayank@gmail.com | 2016-10-27 23:29:14
-19 | [object Object] | mayank@gmail.com | 2016-10-27 23:30:22
 19 | mayank@gmail.com | 201 | 2016-10-27 23:32:38
 19 | mayank@gmail.com | 202 | 2016-10-27 23:35:09
 19 | mayank@gmail.com | 203 | 2016-11-01 20:12:15
@@ -17,3 +14,4 @@ product_id | username | Bid_Amount | Timestamp
 19 | mayank@gmail.com | 205 | 2016-11-01 20:16:16
 19 | mayank@gmail.com | 206 | 2016-11-01 20:20:40
 19 | mayank@gmail.com | 207 | 2016-11-01 20:27:15
+23 | mayank@gmail.com | 2010 | 2016-11-03 20:21:49

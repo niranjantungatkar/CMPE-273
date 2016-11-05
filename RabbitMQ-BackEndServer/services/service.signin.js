@@ -29,7 +29,7 @@ exports.verify_signin_details = function (msg, callback){
     {
 		console.log("In mongo");
 			var currTime = getCurrentTime();
-			var collection = mongo.collection("user_detail");
+			var collection = connection.collection("user_detail");
 			console.log("Encr Password"+encrpassword);
 			collection.findOne({username : username, password : encrpassword}, function(err, userDetails)
 			{	

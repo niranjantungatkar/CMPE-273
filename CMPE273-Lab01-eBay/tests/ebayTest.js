@@ -13,7 +13,7 @@ describe("Login Test", function(){
 		
 		server
 		.post("/signin")
-		.send({"username" : "niranjan.tungatkar@sjsu.edu","password" :"niranjan"})
+		.send({"username" : "mayank@gmail.com","password" :"niranjan"})
 		.expect("Content-type","/json")
 		.expect(200)
 		.end(function(err, res){
@@ -34,10 +34,10 @@ describe("Register Test", function(){
 				
 		server
 		.post("/register")
-		.send({"username" : "kenneth.go@sjsu.edu",
-					"password" : "kenneth123",
-					"FirstName" : "Kenneth",
-					"LastName" : "Go",
+		.send({"username" : "philipheller@sjsu.edu",
+					"password" : "philipheller",
+					"FirstName" : "Philip",
+					"LastName" : "Heller",
 					"Telephone" : "6692655555"})
 		.expect("Conten-type","json")
 		.expect(200)
@@ -56,11 +56,11 @@ describe("Product Test", function(){
 					
 			server
 			.post("/productdetails")
-			.send({"product_id" : "45"})
+			.send({"product_id" : "23"})
 			.expect("Conten-type","json")
 			.expect(200)
 			.end(function(err,res){
-				res.body.product_name.should.equal("Home Life Bed");
+				res.body.product_name.should.equal("Mac Book Pro");
 				
 				done();
 			})
@@ -78,7 +78,7 @@ describe("Check Session Test", function(){
 		.expect(200)
 		.end(function(err,res){
 			res.body.validFlag.should.equal(true);
-			res.body.sessionUser.should.equal("niranjan.tungatkar@sjsu.edu")
+			res.body.sessionUser.should.equal("mayank@gmail.com")
 			
 			done();
 		})
@@ -96,8 +96,8 @@ describe("Check User Details", function(){
 		.expect("Conten-type","json")
 		.expect(200)
 		.end(function(err,res){
-			res.body.user_det.first_name.should.equal("Niranjan");
-			res.body.user_det.last_name.should.equal("Tungatkar")
+			res.body.user_det.first_name.should.equal("Mayank");
+			res.body.user_det.last_name.should.equal("Tanwar")
 			
 			done();
 		})

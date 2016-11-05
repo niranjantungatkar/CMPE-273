@@ -34,7 +34,7 @@ exports.sessionDestroy = function(req,res)
 	}
 	catch(error)
 	{
-		response = {flag : false}
+		response = {flag : false, message : error}
 		res.send(response);
 	}
 };

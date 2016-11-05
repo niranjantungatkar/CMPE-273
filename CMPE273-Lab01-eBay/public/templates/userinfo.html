@@ -36,9 +36,9 @@
 		<tbody>
 			<tr ng-repeat = "itm in itmsforsale">
 				<td>{{itm.product_name}}</td>
-				<td>{{itm.product_sold_flag}}</td>
+				<td>{{itm.product_sold_flag === "yes" ? "Sold" : "Not Sold"}}</td>
 				<td>{{itm.current_bidder}}</td>
-				<td>{{itm.current_bid}}</td>
+				<td>{{itm.current_bidder === "NA" ? "NA" : itm.current_bid}}</td>
 			</tr>
 		</tbody>
 		

@@ -31,7 +31,7 @@ eBayApp.controller('controllerHome', function($scope,$http, $log, $state,userSes
 			$log.info("Post call not working");
 		});
 	
-	/*$http
+	$http
 	({
 		method : "POST",
 		url : '/bidproducts'
@@ -40,7 +40,7 @@ eBayApp.controller('controllerHome', function($scope,$http, $log, $state,userSes
 		$state.reload;
 	}).error(function(error) {
 		$log.info("Post call not working");
-	});*/
+	});
 	
 	$scope.buyProduct = function (product_id){
 		

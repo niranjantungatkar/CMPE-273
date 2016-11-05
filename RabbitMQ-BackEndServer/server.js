@@ -2,7 +2,6 @@
 var amqp = require('amqp')
 , util = require('util');
 
-var login = require('./services/login')
 var signin = require('./services/service.signin');
 var register = require('./services/service.registration')
 var product = require('./services/service.product');
