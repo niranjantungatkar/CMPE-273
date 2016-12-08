@@ -5,6 +5,9 @@ exports.renderCalculatorPage = function(req, res){
   res.render('calculator', { title: 'Calculator' });
 };
 
+var soap = require('soap');
+var baseURL = "http://localhost:8080/Calculator-WebService/services";
+
 //Handles different operations
 exports.evalexpression = function(req, res){
 	var response_answer = {"evalFlag" : null, "answer": null, "errorString" : null };
@@ -13,7 +16,6 @@ exports.evalexpression = function(req, res){
 	var op2;
 	var operator;
 	var answer;
-
 	
 	try 
 	{
@@ -34,40 +36,25 @@ exports.evalexpression = function(req, res){
 			op2 = argument_array[2];
 			operator = argument_array[1];
 		}
-		
+			
 		if(op1 == undefined || op2 == undefined || op1 == "" || op2 == "")
 			throw "Malformed expression";
-		
-		
-		switch(operator) {
-		case '+' : 
-			var op3 = Number(op1);
-			var op4 =  Number(op2);
-			answer= op3 + op4;
-			break;
-		case '-' :
-			var op3 = Number(op1);
-			var op4 =  Number(op2);
-			answer = op3 - op4;
-			break;
-		case '*' :
-			var op3 = Number(op1);
-			var op4 =  Number(op2);
-			answer = op3 * op4;
-			break;
-		case '/' :
-			var op3 = Number(op1);
-			var op4 =  Number(op2);
-			if(op4 == 0)
-			{
-				throw "inferr";
-			}
-			answer = op3 / op4;
-			break;
-		}
+			
+		var option = {
+				ignoredNamespaces : true	
+			};
+		var url = baseURL+"/EvalExp?wsdl";
+		var args = {op1 : op1, op2 : op2, operator : operator};
+		soap.createClient(url,option, function(err, client) {
+			client.evalExp(args, function(err, result) {  
+				answer = result.evalExpReturn;
+				console.log(answer);
+				response_answer = {"evalFlag": true, "answer" : answer, "errorString" : null};
+				res.send(response_answer);
+		    });
+		});
+			
 
-		response_answer = {"evalFlag": true, "answer" : answer, "errorString" : null};
-		res.send(response_answer);
 	}
 	catch(error)
 	{
@@ -77,7 +64,8 @@ exports.evalexpression = function(req, res){
 			res.send(response_answer);
 			console.log(error);
 		}
-		response_answer = {"evalFlag": false, "answer" : "Syntax Error",  "errorString" : "Malformed Expression"};
+			
+		response_answer = {"evalFlag": false, "answer" : "Syntax Error",  "errorString" : "Malformed Expression"};	
 		res.send(response_answer);
 	}
 };
