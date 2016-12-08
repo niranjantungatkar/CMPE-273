@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://CalService" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://CalService" xmlns:intf="http://CalService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://CalService" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="evalExp">
+    <complexType>
+     <sequence>
+      <element name="op1" type="xsd:float"/>
+      <element name="op2" type="xsd:float"/>
+      <element name="operator" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="evalExpResponse">
+    <complexType>
+     <sequence>
+      <element name="evalExpReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="evalExpRequest">
+
+      <wsdl:part element="impl:evalExp" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="evalExpResponse">
+
+      <wsdl:part element="impl:evalExpResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="EvalExp">
+
+      <wsdl:operation name="evalExp">
+
+         <wsdl:input message="impl:evalExpRequest" name="evalExpRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:evalExpResponse" name="evalExpResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="EvalExpSoapBinding" type="impl:EvalExp">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="evalExp">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="evalExpRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="evalExpResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="EvalExpService">
+
+      <wsdl:port binding="impl:EvalExpSoapBinding" name="EvalExp">
+
+         <wsdlsoap:address location="http://localhost:8080/Calculator-WebService/services/EvalExp"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

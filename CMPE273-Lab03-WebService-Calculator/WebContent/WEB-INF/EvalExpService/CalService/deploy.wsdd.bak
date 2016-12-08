@@ -1,0 +1,31 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from EvalExpService WSDL service -->
+
+  <service name="EvalExp" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://CalService"/>
+      <parameter name="wsdlServiceElement" value="EvalExpService"/>
+      <parameter name="schemaQualified" value="http://CalService"/>
+      <parameter name="wsdlServicePort" value="EvalExp"/>
+      <parameter name="className" value="CalService.EvalExpSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EvalExp"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="evalExp" qname="operNS:evalExp" xmlns:operNS="http://CalService" returnQName="retNS:evalExpReturn" xmlns:retNS="http://CalService" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:op1" xmlns:pns="http://CalService" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:op2" xmlns:pns="http://CalService" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:operator" xmlns:pns="http://CalService" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="evalExp"/>
+
+  </service>
+</deployment>
