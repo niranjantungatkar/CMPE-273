@@ -35,7 +35,7 @@ function updateQuantity(product_id, product_quantity)
 		};
 	soap.createClient(url,option, function(err, client) {
 		var productinfo = {product_id : product_id,product_quantity : product_quantity}
-		client.updateQuantity(productInfo, function(err, result) {  
+		client.updateQuantity(productinfo, function(err, result) {  
 			//return Products info
 	    });
 	});
@@ -65,11 +65,11 @@ function recordTransaction(cart,username){
 		
 		var productinfo = {username : username, 
 				product_id : cart.product_id, 
-				product_price : cart.product.price, 
+				product_price : cart.product_price, 
 				product_quantity : cart.product_quantity,
 				time : getCurrentTime()}
 		
-		client.recordTransaction(productInfo, function(err, result) {  
+		client.recordTransaction(productinfo, function(err, result) {  
 	    });
 	});
 	
