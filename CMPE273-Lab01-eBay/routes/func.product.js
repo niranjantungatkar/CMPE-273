@@ -2,6 +2,11 @@ var mysql = require('./util.database');
 var session = require('./func.session');
 var dateFormat = require('dateformat');
 
+var soap = require('soap');
+var baseURL = "http://localhost:8080/eBay-WebService/services";
+
+
+
 function getProductQuery()
 {
 	var userQuery = "select product_id, product_name, product_desc, product_adv,product_seller_info, product_quantity, product_price from product_detail " +
@@ -130,3 +135,108 @@ exports.getProductDetails = function(req,res){
 		
 	}, getProductDetailQuery(product_id));
 }
+
+
+
+/*exports.returnBidProductInfo = function(req, res){
+	
+	var product_id = req.param("product_id");
+	var url = baseURL+"/ProductInfo?wsdl";
+	var option = {
+			ignoredNamespaces : true	
+		};
+	soap.createClient(url,option, function(err, client) {
+		
+		var productinfo = {product_id : prodcut_id}
+		
+		client.bidProduct(productinfo, function(err, result) {  
+			//return bid product info
+	    });
+	});
+}
+
+
+exports.returnBidProductsdetails = function(req, res){
+	var query = "";
+	if(req.session.username)
+	{
+		var url = baseURL+"/ProductInfo?wsdl";	
+		var option = {
+				ignoredNamespaces : true	
+			};
+		soap.createClient(url,option, function(err, client) {
+			var user = {username : req.session.username}
+			client.bidProducts(user, function(err, result) {  
+				//return bid products info
+		    });
+		});
+	}
+	else
+	{
+		var url = baseURL+"/ProductInfo?wsdl";
+		var option = {
+				ignoredNamespaces : true	
+			};
+		soap.createClient(url,option, function(err, client) {
+			var user = {username : ""}
+			client.bidProducts(user, function(err, result) {  
+				//return bid products info
+		    });
+		});
+	}
+
+}
+
+exports.returnProductdetails = function(req, res){
+	var query = "";
+	if(req.session.username)
+	{
+		var url = baseURL+"/ProductInfo?wsdl";
+		var option = {
+				ignoredNamespaces : true	
+			};
+		soap.createClient(url,option, function(err, client) {
+			var user = {username : req.session.username}
+			client.products(user, function(err, result) {  
+				//return Products info
+		    });
+		});
+	}
+	else
+	{	
+		var url = baseURL+"/ProductInfo?wsdl";
+		var option = {
+				ignoredNamespaces : true	
+			};
+		soap.createClient(url,option, function(err, client) {
+			var user = {username : ""}
+			client.products(user, function(err, result) {  
+				//return Products info
+		    });
+		});
+	}
+}
+
+exports.getProductDetails = function(req,res){
+	
+	product_id = req.param('product_id');
+	var url = baseURL+"/ProductInfo?wsdl";
+	var option = {
+			ignoredNamespaces : true	
+		};
+	soap.createClient(url,option, function(err, client) {
+		var productinfo = {product_id : product_id}
+		client.product(user, function(err, result) {  
+			//return Products info
+	    });
+	});
+}*/
+
+
+
+
+
+
+
+
+
