@@ -1,0 +1,40 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from AddProductService WSDL service -->
+
+  <service name="AddProduct" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://productMgmt"/>
+      <parameter name="wsdlServiceElement" value="AddProductService"/>
+      <parameter name="schemaQualified" value="http://productMgmt"/>
+      <parameter name="wsdlServicePort" value="AddProduct"/>
+      <parameter name="className" value="productMgmt.AddProductSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="AddProduct"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="addProduct" qname="operNS:addProduct" xmlns:operNS="http://productMgmt" soapAction="" >
+        <parameter qname="pns:product_name" xmlns:pns="http://productMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_category" xmlns:pns="http://productMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_desc" xmlns:pns="http://productMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_adv" xmlns:pns="http://productMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_seller_info" xmlns:pns="http://productMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_quantity" xmlns:pns="http://productMgmt" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_price" xmlns:pns="http://productMgmt" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_bid_flag" xmlns:pns="http://productMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_base_bid" xmlns:pns="http://productMgmt" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_adv_time" xmlns:pns="http://productMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_bid_end_time" xmlns:pns="http://productMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:current_bid" xmlns:pns="http://productMgmt" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="addProduct"/>
+
+  </service>
+</deployment>

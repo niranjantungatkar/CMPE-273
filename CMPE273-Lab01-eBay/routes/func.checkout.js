@@ -14,19 +14,6 @@ function getCurrentTime()
 }
 
 
-function getProductQuery(product_id)
-{
-	var productQuery = "select product_quantity from product_detail where product_id='"+product_id+"'";
-	return productQuery;
-}
-
-function getUpdateQuery(product_id, new_quantity)
-{
-	var producUpdateQuery = "update product_detail set product_quantity ='"+new_quantity+"' where product_id ='"+product_id+"'";
-	return productUpdateeQuery;
-}
-
-
 function updateQuantity(product_id, product_quantity)
 {
 	var url = baseURL+"/Checkout?wsdl";
@@ -36,24 +23,12 @@ function updateQuantity(product_id, product_quantity)
 	soap.createClient(url,option, function(err, client) {
 		var productinfo = {product_id : product_id,product_quantity : product_quantity}
 		client.updateQuantity(productinfo, function(err, result) {  
-			//return Products info
+			
 	    });
 	});
 	
 }
 
-function getUpdateQuery(product_id, new_quantity)
-{
-	var updQuery = "UPDATE product_detail SET product_quantity='"+new_quantity+"' WHERE product_id='"+product_id+"'";
-	return updQuery;
-}
-
-function gettransactionQuery(cart, username)
-{
-	var transactionQuery = "INSERT INTO transaction_detail (trans_id, trans_type, username,product_id, trans_amount, product_quantity, trans_time) VALUES"+
-							"(null, '1', '"+username+"', '"+cart.product_id+"', '"+cart.product_price+"', '"+cart.product_quantity+"', '"+getCurrentTime()+"')"
-	return transactionQuery;
-}
 
 function recordTransaction(cart,username){
 	
