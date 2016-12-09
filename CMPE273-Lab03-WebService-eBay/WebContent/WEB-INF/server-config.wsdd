@@ -52,6 +52,24 @@
   <ns1:parameter name="wsdlTargetNamespace" value="http://userManagement"/>
   <ns1:parameter name="wsdlServiceElement" value="RegisterService"/>
  </ns1:service>
+ <ns1:service name="Login" provider="java:RPC" style="wrapped" use="literal">
+  <ns1:operation name="validLogin" qname="ns3:validLogin" returnQName="ns3:validLoginReturn" returnType="xsd:boolean" soapAction="" xmlns:ns3="http://userManagement" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns3:username" type="xsd:string"/>
+   <ns1:parameter qname="ns3:password" type="xsd:string"/>
+  </ns1:operation>
+  <ns1:operation name="updateLastLogin" qname="ns4:updateLastLogin" soapAction="" xmlns:ns4="http://userManagement">
+   <ns1:parameter qname="ns4:username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns4:time" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  </ns1:operation>
+  <ns1:parameter name="allowedMethods" value="validLogin updateLastLogin"/>
+  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+  <ns1:parameter name="wsdlPortType" value="Login"/>
+  <ns1:parameter name="className" value="userManagement.Login"/>
+  <ns1:parameter name="wsdlServicePort" value="Login"/>
+  <ns1:parameter name="schemaQualified" value="http://userManagement"/>
+  <ns1:parameter name="wsdlTargetNamespace" value="http://userManagement"/>
+  <ns1:parameter name="wsdlServiceElement" value="LoginService"/>
+ </ns1:service>
  <ns1:transport name="http">
   <ns1:requestFlow>
    <ns1:handler type="URLMapper"/>

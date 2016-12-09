@@ -29,32 +29,6 @@ function getCurrentTime()
 	return currTime;
 }
 
-function getInsertQuery(username,password,firstname,lastname,telephone)
-{
-	var InsertQuery = "INSERT INTO user_detail (username, password, first_name, last_name,telephone) VALUES ('"+username+"', '"+password+"', '"+firstname+"', '"+lastname+"', '"+telephone+"')";
-	return InsertQuery;
-}
-
-function getUserQuery(username)
-{
-	var userQuery = "select count(1) cnt from user_detail where username='"+username+"'";
-	return userQuery;
-}
-
-
-
-function setValidregistrationUserExists(validRegistration)
-{
-	validRegistration = { "flag" : false, "message" : "Username already exists"};
-	return validRegistration;
-}
-
-function setValidregistrationUserAdded(validRegistration)
-{
-	validRegistration = { "flag" : true, "message" : "User was successfully registered"};
-	return validRegistration;
-}
-
 
 function encrypt(password)
 {
