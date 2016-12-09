@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from BiddingService WSDL service -->
+
+  <service name="Bidding" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://bidMgmt"/>
+      <parameter name="wsdlServiceElement" value="BiddingService"/>
+      <parameter name="schemaQualified" value="http://bidMgmt"/>
+      <parameter name="wsdlServicePort" value="Bidding"/>
+      <parameter name="className" value="bidMgmt.Bidding"/>
+      <parameter name="wsdlPortType" value="Bidding"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://bidMgmt" name="updateBidLog" qname="operNS:updateBidLog" soapAction="">
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:product_id" type="tns:string"/>
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:bidamount" type="tns:float"/>
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:bidder" type="tns:string"/>
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:time" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://bidMgmt" name="updateProductTable" qname="operNS:updateProductTable" soapAction="">
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:product_id" type="tns:string"/>
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:bidder" type="tns:string"/>
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:bidamount" type="tns:float"/>
+      </operation>
+      <operation xmlns:operNS="http://bidMgmt" name="update_bid_transaction" qname="operNS:update_bid_transaction" soapAction="">
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:product_id" type="tns:string"/>
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://bidMgmt" name="update_transaction_detail" qname="operNS:update_transaction_detail" soapAction="">
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:product_id" type="tns:string"/>
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:bid_amount" type="tns:float"/>
+        <parameter xmlns:pns="http://bidMgmt" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:time" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="updateBidLog updateProductTable update_bid_transaction update_transaction_detail"/>
+
+  </service>
+</deployment>

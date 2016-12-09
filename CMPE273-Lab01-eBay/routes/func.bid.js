@@ -5,7 +5,10 @@ var logger = require('./util.logger');
 
 var cronjob = require('cron').CronJob;
 
-/*var bidJob = new cronjob('30 * * * * *', function(){
+var soap = require('soap');
+var baseURL = "http://localhost:8080/eBay-WebService/services";
+
+var bidJob = new cronjob('30 * * * * *', function(){
 	
 		mysql.fetchData(function(err, results) {
 				if(err)
@@ -36,9 +39,9 @@ var cronjob = require('cron').CronJob;
 		
 	}, 
 	true,
-	'America/Los_Angeles');*/
+	'America/Los_Angeles');
 
-//bidJob.start();
+bidJob.start();
 
 function updateBidFlag(product_id){
 	
@@ -93,6 +96,12 @@ function getCurrentTime()
 	return currTime;
 }
 
+function getInsertBidInfoQuery(product_id, bidamount, bidder)
+{
+	var BidLogString = product_id+" | "+bidder+" | "+bidamount+" | "+getCurrentTime()+"\n";
+	logger.writeBidInfoLog(BidLogString);
+}
+
 function getProductUpdateQuery(product_id, bidder,  bidamount)
 {
 	var query = "update product_detail set current_bid = '"+bidamount+"', current_bidder = '"+bidder+"' where product_id = '"+product_id+"'";
@@ -101,42 +110,52 @@ function getProductUpdateQuery(product_id, bidder,  bidamount)
 
 function updateProductTable(product_id, bidder, bidamount,res)
 {
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch Product Data');
-		}
-		else
-		{
-			res.send(results[0]);
-		}
-		
-	}, getProductUpdateQuery(product_id, bidder, bidamount));
+	var url = baseURL+"/Bidding?wsdl";
+	var option = {
+			ignoredNamespaces : true	
+		};
+	soap.createClient(url,option, function(err, client) {
+		var productinfo = {product_id : product_id,bidder : bidder, bidamount : bidamount}
+		client.updateProductTable(productinfo, function(err, result) {  
+			if(err)
+			{
+				console.log("Unable to update bid log");
+				res.send({flag : false, message : "Unable to update bid log"});
+			}
+			else
+			{
+				res.send({flag : true, message : "Unable to update bid log"});
+			}
+			
+	    });
+	});
 
-}
-
-function getInsertBidInfoQuery(product_id, bidamount, bidder)
-{
-	var query = "Insert into bid_log(bid_id, product_id, bid_amount, bidder, bid_time) values(null, '"+product_id+"', '"+bidamount+"', '"+bidder+"', '"+getCurrentTime()+"')";
-	var BidLogString = product_id+" | "+bidder+" | "+bidamount+" | "+getCurrentTime()+"\n";
-	logger.writeBidInfoLog(BidLogString);
-	return query;
 }
 
 
 function updateBidLog(product_id, bidamount, bidder,res)
 {
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch Product Data');
-		}
-		else
-		{
-			res.send(results[0]);
-		}
-		
-	}, getInsertBidInfoQuery(product_id, bidamount, bidder));
+
+	getInsertBidInfoQuery(product_id, bidamount, bidder);
+	var url = baseURL+"/Bidding?wsdl";
+	var option = {
+			ignoredNamespaces : true	
+		};
+	soap.createClient(url,option, function(err, client) {
+		var productinfo = {product_id : product_id,bidamount : bidamount, bidder : bidder}
+		client.updateBidLog(productinfo, function(err, result) {  
+			if(err)
+			{
+				console.log("Unable to update bid log");
+				res.send({flag : false, message : "Unable to update bid log"});
+			}
+			else
+			{
+				updateProductTable(product_id, bidder, bidamount,res);
+			}
+			
+	    });
+	});
 
 }
 
@@ -145,24 +164,7 @@ exports.enterBid = function (req,res){
 	var bidamount = req.param('bidamount');
 	var bidder = req.param('bidder');
 	
-	updateProductTable(product_id, bidder, bidamount,res);
 	updateBidLog(product_id, bidamount, bidder,res);
-}
-
-
-
-function update_bid_transaction(product_id, username)
-{
-	var query = "update bid_transaction set paid_flag = 'Y' where product_id = '"+product_id+"' and username = '"+username+"'";
-	return query;
-}
-
-
-function update_transaction_detail(username, product_id, bid_amount)
-{
-	var transactionQuery = "INSERT INTO transaction_detail (trans_id, trans_type, username,product_id, trans_amount, product_quantity, trans_time) VALUES"+
-							"(null, '3', '"+username+"', '"+product_id+"', '"+bid_amount+"', '1', '"+getCurrentTime()+"')"
-	return transactionQuery;
 }
 
 
@@ -173,31 +175,29 @@ exports.checkout = function(req,res)
 	var product_id = req.param('product_id');
 	var bid_amount = req.param('bid_amount');
 	
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch Product Data');
-		}
-		else
-		{
-			res.send(results[0]);
-		}
-		
-	}, update_bid_transaction(product_id, username));
 	
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to fetch Product Data');
-		}
-		else
-		{
-			res.send(results[0]);
-		}
-		
-	}, update_transaction_detail(username, product_id, bid_amount));
-	
-	
+	var url = baseURL+"/Bidding?wsdl";
+	var option = {
+			ignoredNamespaces : true	
+		};
+	soap.createClient(url,option, function(err, client) {
+		var userinfo = {product_id : product_id, username : username}
+		client.update_bid_transaction(userinfo, function(err, result) {  
+			if(err)
+			{
+				console.log("Unable to update bid transaction");
+				res.send({flag : false, message : "Unable to update bid log"});
+			}
+			else
+			{
+				var transDet = {username : username, product_id : product_id, bid_amount, time : getCurrentTime()}
+				client.update_transaction_detail(transDet, function(err,result){
+					res.send({flag : true, message: "Updated successfully"});
+				});
+			}
+			
+	    });
+	});
 	
 }
 
