@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://userManagement" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://userManagement" xmlns:intf="http://userManagement" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://userManagement" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="addUser">
+    <complexType>
+     <sequence>
+      <element name="username" type="xsd:string"/>
+      <element name="password" type="xsd:string"/>
+      <element name="first_name" type="xsd:string"/>
+      <element name="last_name" type="xsd:string"/>
+      <element name="telephone" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="addUserResponse">
+    <complexType/>
+   </element>
+   <element name="chkUserExists">
+    <complexType>
+     <sequence>
+      <element name="username" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="chkUserExistsResponse">
+    <complexType>
+     <sequence>
+      <element name="chkUserExistsReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="chkUserExistsRequest">
+
+      <wsdl:part element="impl:chkUserExists" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="addUserResponse">
+
+      <wsdl:part element="impl:addUserResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="chkUserExistsResponse">
+
+      <wsdl:part element="impl:chkUserExistsResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="addUserRequest">
+
+      <wsdl:part element="impl:addUser" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="Register">
+
+      <wsdl:operation name="addUser">
+
+         <wsdl:input message="impl:addUserRequest" name="addUserRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:addUserResponse" name="addUserResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="chkUserExists">
+
+         <wsdl:input message="impl:chkUserExistsRequest" name="chkUserExistsRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:chkUserExistsResponse" name="chkUserExistsResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="RegisterSoapBinding" type="impl:Register">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="addUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="addUserRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="addUserResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="chkUserExists">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="chkUserExistsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="chkUserExistsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="RegisterService">
+
+      <wsdl:port binding="impl:RegisterSoapBinding" name="Register">
+
+         <wsdlsoap:address location="http://localhost:8080/eBay-WebService/services/Register"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

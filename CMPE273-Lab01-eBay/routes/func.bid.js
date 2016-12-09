@@ -5,7 +5,7 @@ var logger = require('./util.logger');
 
 var cronjob = require('cron').CronJob;
 
-var bidJob = new cronjob('30 * * * * *', function(){
+/*var bidJob = new cronjob('30 * * * * *', function(){
 	
 		mysql.fetchData(function(err, results) {
 				if(err)
@@ -36,9 +36,9 @@ var bidJob = new cronjob('30 * * * * *', function(){
 		
 	}, 
 	true,
-	'America/Los_Angeles');
+	'America/Los_Angeles');*/
 
-bidJob.start();
+//bidJob.start();
 
 function updateBidFlag(product_id){
 	

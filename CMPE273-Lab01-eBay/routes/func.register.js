@@ -13,8 +13,11 @@
 var mysql = require('./util.database');
 var dateFormat = require('dateformat');
 var crypto = require('crypto');
-
 var algorithm = 'aes-256-ctr';
+
+
+var soap = require('soap');
+var baseURL = "http://localhost:8080/eBay-WebService/services";
 
 
 
@@ -38,11 +41,7 @@ function getUserQuery(username)
 	return userQuery;
 }
 
-function setValidregistrationFalse(validRegistration)
-{
-	validRegistration = { "flag" : false, "message" : "Error Occured while registering the user."};
-	return validRegistration;
-}
+
 
 function setValidregistrationUserExists(validRegistration)
 {
@@ -57,120 +56,57 @@ function setValidregistrationUserAdded(validRegistration)
 }
 
 
-function checkUsernameExists(validRegistration, username){
-	
-	var usernameAlreadyExists = true;
-	
-	mysql.fetchData(function(err,results) {
-		if(err)
-		{
-			
-			setValidregistrationFalse(validRegistration);
-			usernameAlreadyExists = true;
-			throw err;
-		}
-		else
-		{
-			if(results[0].cnt > 0)
-			{
-			
-				setValidregistrationUserExists(validRegistration);
-				usernameAlreadyExists = true;
-			}
-			else
-			{	
-				
-				usernameAlreadyExists = false;
-			}
-		}
-	}, getUserQuery(username));
-	
-	return usernameAlreadyExists;
-}
-
-
-
-function registerUser(username,password,FirstName,LastName,Telephone, validRegistration)
-{
-	
-	var insertQuery = getInsertQuery(username,password,FirstName,LastName,Telephone);
-	var registrationFlag = false;
-	
-	mysql.updateData(function(err,results) {
-		if(err)
-		{
-			
-			setValidregistrationFalse(validRegistration);
-			throw err;
-		}
-		else
-		{
-			
-			setValidregistrationUserAdded(validRegistration);
-			registrationFlag = true;
-		}
-	}, insertQuery);
-	return registrationFlag;
-}
-
 function encrypt(password)
 {
-	var cipher = crypto.createCipher(algorithm, password);
-	return cipher;
+	//var cipher = crypto.createCipher(algorithm, password);
+	var cipher = crypto.createCipher("aes-256-ctr", "test");
+	var pass = cipher.update(password, 'utf8','hex');
+	pass = pass + cipher.final('hex');
+	return pass;
 }
 
 
 exports.addUser = function(req, res){
 	
 	var validRegistration = { "flag" : false, "message": null};
-	
 	var username = req.param('username');
 	var password = encrypt(req.param('password'));
 	var FirstName = req.param('FirstName');
 	var LastName = req.param('LastName');
 	var Telephone = req.param('Telephone');
+	var url = baseURL+"/Register?wsdl";
+	
+	console.log("Password : "+password);
 
-
-	mysql.fetchData(function(err,results) {
-		if(err)
-		{
-			validRegistration = setValidregistrationFalse(validRegistration);
-			res.send(validRegistration);
-			throw err;
-		}
-		else
-		{
-			if(results[0].cnt > 0)
+	var option = {
+			ignoredNamespaces : true	
+		};
+	
+	var userCred = {username : username}
+	soap.createClient(url,option, function(err, client) {
+		client.chkUserExists(userCred, function(err, result) {  
+			if(result.chkUserExistsReturn)
 			{
-				
-				validRegistration = setValidregistrationUserExists(validRegistration);
-				console.log(validRegistration.flag+' '+validRegistration.message);
-				res.send(validRegistration);
-			}
-			else
-			{
-								
-				mysql.updateData(function(err,results) {
+				var userDet = {username : username, password : password, first_name : FirstName, last_name : LastName, telephone : Telephone}
+				client.addUser(userDet, function(err, result){
 					if(err)
 					{
-						
-						validRegistration = setValidregistrationFalse(validRegistration);
-						console.log(validRegistration.flag+' '+validRegistration.message);
+						validRegistration = { "flag" : false, "message" : "Internal Server error occurred"};
 						res.send(validRegistration);
-						throw err;
 					}
 					else
 					{
-						
-						validRegistration = setValidregistrationUserAdded(validRegistration);
-						console.log(validRegistration.flag+' '+validRegistration.message);
+						validRegistration = { "flag" : true, "message" : "User was successfully registered"};
 						res.send(validRegistration);
+						
 					}
-				}, getInsertQuery(username,password,FirstName,LastName,Telephone));
-
+				});	
 			}
-		}
-	}, getUserQuery(username));
-	
-	
+			else
+			{
+				validRegistration = { "flag" : false, "message" : "Username already exists"};
+				res.send(validRegistration);
+			}
+	    });
+	});	
 };
