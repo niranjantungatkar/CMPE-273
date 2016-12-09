@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://checkout" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://checkout" xmlns:intf="http://checkout" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://checkout" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="recordTransaction">
+    <complexType>
+     <sequence>
+      <element name="username" type="xsd:string"/>
+      <element name="product_id" type="xsd:string"/>
+      <element name="product_price" type="xsd:string"/>
+      <element name="product_quantity" type="xsd:string"/>
+      <element name="time" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="recordTransactionResponse">
+    <complexType/>
+   </element>
+   <element name="updateQuantity">
+    <complexType>
+     <sequence>
+      <element name="product_id" type="xsd:string"/>
+      <element name="product_quantity" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="updateQuantityResponse">
+    <complexType/>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="recordTransactionRequest">
+
+      <wsdl:part element="impl:recordTransaction" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="recordTransactionResponse">
+
+      <wsdl:part element="impl:recordTransactionResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateQuantityResponse">
+
+      <wsdl:part element="impl:updateQuantityResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateQuantityRequest">
+
+      <wsdl:part element="impl:updateQuantity" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="Checkout">
+
+      <wsdl:operation name="recordTransaction">
+
+         <wsdl:input message="impl:recordTransactionRequest" name="recordTransactionRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:recordTransactionResponse" name="recordTransactionResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateQuantity">
+
+         <wsdl:input message="impl:updateQuantityRequest" name="updateQuantityRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:updateQuantityResponse" name="updateQuantityResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="CheckoutSoapBinding" type="impl:Checkout">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="recordTransaction">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="recordTransactionRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="recordTransactionResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateQuantity">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateQuantityRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateQuantityResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="CheckoutService">
+
+      <wsdl:port binding="impl:CheckoutSoapBinding" name="Checkout">
+
+         <wsdlsoap:address location="http://localhost:8080/eBay-WebService/services/Checkout"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

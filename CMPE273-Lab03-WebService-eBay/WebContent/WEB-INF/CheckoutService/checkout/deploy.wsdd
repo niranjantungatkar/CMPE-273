@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from CheckoutService WSDL service -->
+
+  <service name="Checkout" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://checkout"/>
+      <parameter name="wsdlServiceElement" value="CheckoutService"/>
+      <parameter name="schemaQualified" value="http://checkout"/>
+      <parameter name="wsdlServicePort" value="Checkout"/>
+      <parameter name="className" value="checkout.Checkout"/>
+      <parameter name="wsdlPortType" value="Checkout"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://checkout" name="recordTransaction" qname="operNS:recordTransaction" soapAction="">
+        <parameter xmlns:pns="http://checkout" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
+        <parameter xmlns:pns="http://checkout" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:product_id" type="tns:string"/>
+        <parameter xmlns:pns="http://checkout" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:product_price" type="tns:string"/>
+        <parameter xmlns:pns="http://checkout" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:product_quantity" type="tns:string"/>
+        <parameter xmlns:pns="http://checkout" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:time" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://checkout" name="updateQuantity" qname="operNS:updateQuantity" soapAction="">
+        <parameter xmlns:pns="http://checkout" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:product_id" type="tns:string"/>
+        <parameter xmlns:pns="http://checkout" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:product_quantity" type="tns:int"/>
+      </operation>
+      <parameter name="allowedMethods" value="recordTransaction updateQuantity"/>
+
+  </service>
+</deployment>

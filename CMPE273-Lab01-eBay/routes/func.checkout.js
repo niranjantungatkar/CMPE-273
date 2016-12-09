@@ -2,6 +2,9 @@ var mysql = require('./util.database');
 var session = require('./func.session');
 var dateFormat = require('dateformat');
 
+var soap = require('soap');
+var baseURL = "http://localhost:8080/eBay-WebService/services";
+
 function getCurrentTime()
 {
 	var currTime;
@@ -24,67 +27,18 @@ function getUpdateQuery(product_id, new_quantity)
 }
 
 
-function checkValidity(product_id, product_quantity,res)
-{
-	var act_product_quantity = 0;
-	var response = {flag : false, product_id : null, message : null}
-	var flag = true;
-	
-	/*mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to update the last Login');
-		}
-		else
-		{
-			act_product_quantity = results[0].product_quantity;
-			if(act_product_quantity < product_quantity )
-			{	
-				response.flag = false
-				response.product_id  = product_id;
-				message = "Quantity available in the Stock is less than than the Quantiyt in the Cart"
-				flag = false;
-				//res.send(response);
-			}
-			else
-			{
-				console.log("valid");
-				return true;
-			}
-				
-		}
-		
-	}, getProductQuery(product_id));*/
-
-}
-
 function updateQuantity(product_id, product_quantity)
 {
-	mysql.fetchData(function(err, results) {
-		if(err)
-		{
-			console.log('Not able to update the last Login');
-		}
-		else
-		{
-			var act_quantity = results[0].product_quantity;
-			var new_quantity = parseFloat(act_quantity) - parseFloat(product_quantity);
-			console.log("Product id : "+product_id+" New :"+new_quantity+" act :"+act_quantity+" product : "+product_quantity);
-			
-			mysql.fetchData(function(err,results){
-				if(err)
-				{
-					console.log("Product not updated");
-				}
-				else
-				{
-					console.log("product Updated")
-				}
-			},getUpdateQuery(product_id, new_quantity));
-			
-			
-		}
-	},getProductQuery(product_id));
+	var url = baseURL+"/Checkout?wsdl";
+	var option = {
+			ignoredNamespaces : true	
+		};
+	soap.createClient(url,option, function(err, client) {
+		var productinfo = {product_id : product_id,product_quantity : product_quantity}
+		client.updateQuantity(productInfo, function(err, result) {  
+			//return Products info
+	    });
+	});
 	
 }
 
@@ -102,17 +56,22 @@ function gettransactionQuery(cart, username)
 }
 
 function recordTransaction(cart,username){
-
-		mysql.fetchData(function(err,results){
-			if(err)
-			{
-				console.log("Product not updated");
-			}
-			else
-			{
-				console.log("product Updated")
-			}
-		},gettransactionQuery(cart,username));
+	
+	var url = baseURL+"/Checkout?wsdl";
+	var option = {
+			ignoredNamespaces : true	
+		};
+	soap.createClient(url,option, function(err, client) {
+		
+		var productinfo = {username : username, 
+				product_id : cart.product_id, 
+				product_price : cart.product.price, 
+				product_quantity : cart.product_quantity,
+				time : getCurrentTime()}
+		
+		client.recordTransaction(productInfo, function(err, result) {  
+	    });
+	});
 	
 }
 
