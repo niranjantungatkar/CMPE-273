@@ -12,6 +12,9 @@ var baseURL = "http://localhost:8080/Calculator-WebService/services";
 exports.evalexpression = function(req, res){
 	var response_answer = {"evalFlag" : null, "answer": null, "errorString" : null };
 	var expression = req.param("expression");
+	//var expression = req.body.expression;
+	//console.log(expression);
+	//console.log(req.body);
 	var op1;
 	var op2;
 	var operator;
@@ -20,6 +23,7 @@ exports.evalexpression = function(req, res){
 	try 
 	{
 		var argument_array = expression.replace(/[+,\-,*,/]/g,' $& ').split(/ /g);
+		console.log(argument_array);
 		if(argument_array.length < 3)
 			throw "Malformed Error"
 		if(argument_array.length > 5)
@@ -38,7 +42,11 @@ exports.evalexpression = function(req, res){
 		}
 			
 		if(op1 == undefined || op2 == undefined || op1 == "" || op2 == "")
+		{
+			console.log("Throwing error")
 			throw "Malformed expression";
+		}
+			
 			
 		var option = {
 				ignoredNamespaces : true	
@@ -64,7 +72,7 @@ exports.evalexpression = function(req, res){
 			res.send(response_answer);
 			console.log(error);
 		}
-			
+		console.log("In exception")
 		response_answer = {"evalFlag": false, "answer" : "Syntax Error",  "errorString" : "Malformed Expression"};	
 		res.send(response_answer);
 	}

@@ -10,15 +10,15 @@
       <parameter name="className" value="userManagement.Register"/>
       <parameter name="wsdlPortType" value="Register"/>
       <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://userManagement" xmlns:retNS="http://userManagement" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="chkUserExists" qname="operNS:chkUserExists" returnQName="retNS:chkUserExistsReturn" returnType="rtns:boolean" soapAction="">
+        <parameter xmlns:pns="http://userManagement" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
+      </operation>
       <operation xmlns:operNS="http://userManagement" name="addUser" qname="operNS:addUser" soapAction="">
         <parameter xmlns:pns="http://userManagement" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
         <parameter xmlns:pns="http://userManagement" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:password" type="tns:string"/>
         <parameter xmlns:pns="http://userManagement" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:first_name" type="tns:string"/>
         <parameter xmlns:pns="http://userManagement" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:last_name" type="tns:string"/>
         <parameter xmlns:pns="http://userManagement" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:telephone" type="tns:string"/>
-      </operation>
-      <operation xmlns:operNS="http://userManagement" xmlns:retNS="http://userManagement" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="chkUserExists" qname="operNS:chkUserExists" returnQName="retNS:chkUserExistsReturn" returnType="rtns:boolean" soapAction="">
-        <parameter xmlns:pns="http://userManagement" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
       </operation>
       <parameter name="allowedMethods" value="addUser chkUserExists"/>
 

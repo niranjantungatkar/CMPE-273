@@ -4,6 +4,30 @@
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema elementFormDefault="qualified" targetNamespace="http://bidMgmt" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="update_bid_transaction">
+    <complexType>
+     <sequence>
+      <element name="product_id" type="xsd:string"/>
+      <element name="username" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="update_bid_transactionResponse">
+    <complexType/>
+   </element>
+   <element name="update_transaction_detail">
+    <complexType>
+     <sequence>
+      <element name="username" type="xsd:string"/>
+      <element name="product_id" type="xsd:string"/>
+      <element name="bid_amount" type="xsd:float"/>
+      <element name="time" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="update_transaction_detailResponse">
+    <complexType/>
+   </element>
    <element name="updateBidLog">
     <complexType>
      <sequence>
@@ -27,30 +51,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     </complexType>
    </element>
    <element name="updateProductTableResponse">
-    <complexType/>
-   </element>
-   <element name="update_bid_transaction">
-    <complexType>
-     <sequence>
-      <element name="product_id" type="xsd:string"/>
-      <element name="username" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="update_bid_transactionResponse">
-    <complexType/>
-   </element>
-   <element name="update_transaction_detail">
-    <complexType>
-     <sequence>
-      <element name="username" type="xsd:string"/>
-      <element name="product_id" type="xsd:string"/>
-      <element name="bid_amount" type="xsd:float"/>
-      <element name="time" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="update_transaction_detailResponse">
     <complexType/>
    </element>
   </schema>
@@ -88,14 +88,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="updateProductTableRequest">
-
-      <wsdl:part element="impl:updateProductTable" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
    <wsdl:message name="update_bid_transactionResponse">
 
       <wsdl:part element="impl:update_bid_transactionResponse" name="parameters">
@@ -112,6 +104,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="updateProductTableRequest">
+
+      <wsdl:part element="impl:updateProductTable" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="update_bid_transactionRequest">
 
       <wsdl:part element="impl:update_bid_transaction" name="parameters">
@@ -121,30 +121,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    </wsdl:message>
 
    <wsdl:portType name="Bidding">
-
-      <wsdl:operation name="updateBidLog">
-
-         <wsdl:input message="impl:updateBidLogRequest" name="updateBidLogRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:updateBidLogResponse" name="updateBidLogResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="updateProductTable">
-
-         <wsdl:input message="impl:updateProductTableRequest" name="updateProductTableRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:updateProductTableResponse" name="updateProductTableResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
 
       <wsdl:operation name="update_bid_transaction">
 
@@ -170,47 +146,35 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-   </wsdl:portType>
-
-   <wsdl:binding name="BiddingSoapBinding" type="impl:Bidding">
-
-      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-
       <wsdl:operation name="updateBidLog">
 
-         <wsdlsoap:operation soapAction=""/>
+         <wsdl:input message="impl:updateBidLogRequest" name="updateBidLogRequest">
 
-         <wsdl:input name="updateBidLogRequest">
+       </wsdl:input>
 
-            <wsdlsoap:body use="literal"/>
+         <wsdl:output message="impl:updateBidLogResponse" name="updateBidLogResponse">
 
-         </wsdl:input>
-
-         <wsdl:output name="updateBidLogResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
+       </wsdl:output>
 
       </wsdl:operation>
 
       <wsdl:operation name="updateProductTable">
 
-         <wsdlsoap:operation soapAction=""/>
+         <wsdl:input message="impl:updateProductTableRequest" name="updateProductTableRequest">
 
-         <wsdl:input name="updateProductTableRequest">
+       </wsdl:input>
 
-            <wsdlsoap:body use="literal"/>
+         <wsdl:output message="impl:updateProductTableResponse" name="updateProductTableResponse">
 
-         </wsdl:input>
-
-         <wsdl:output name="updateProductTableResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
+       </wsdl:output>
 
       </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="BiddingSoapBinding" type="impl:Bidding">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
 
       <wsdl:operation name="update_bid_transaction">
 
@@ -241,6 +205,42 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="update_transaction_detailResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateBidLog">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateBidLogRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateBidLogResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateProductTable">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateProductTableRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateProductTableResponse">
 
             <wsdlsoap:body use="literal"/>
 

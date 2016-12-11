@@ -7,8 +7,8 @@
   <ns1:parameter name="dotNetSoapEncFix" value="true"/>
   <ns1:parameter name="enableNamespacePrefixOptimization" value="false"/>
   <ns1:parameter name="sendXMLDeclaration" value="true"/>
-  <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
   <ns1:parameter name="sendXsiTypes" value="true"/>
+  <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
   <ns1:requestFlow>
    <ns1:handler type="java:org.apache.axis.handlers.JWSHandler">
     <ns1:parameter name="scope" value="session"/>
@@ -46,9 +46,9 @@
   <ns1:parameter name="className" value="checkout.Checkout"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="allowedMethods" value="recordTransaction updateQuantity"/>
-  <ns1:parameter name="wsdlPortType" value="Checkout"/>
   <ns1:parameter name="wsdlServiceElement" value="CheckoutService"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://checkout"/>
+  <ns1:parameter name="wsdlPortType" value="Checkout"/>
   <ns1:parameter name="sendXsiTypes" value="false"/>
  </ns1:service>
  <ns1:service name="AddProduct" provider="java:RPC" style="wrapped" use="literal">
@@ -72,34 +72,34 @@
   <ns1:parameter name="className" value="productMgmt.AddProduct"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="allowedMethods" value="addProduct"/>
-  <ns1:parameter name="wsdlPortType" value="AddProduct"/>
-  <ns1:parameter name="wsdlServiceElement" value="AddProductService"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://productMgmt"/>
+  <ns1:parameter name="wsdlServiceElement" value="AddProductService"/>
+  <ns1:parameter name="wsdlPortType" value="AddProduct"/>
   <ns1:parameter name="sendXsiTypes" value="false"/>
  </ns1:service>
  <ns1:service name="Bidding" provider="java:RPC" style="wrapped" use="literal">
-  <ns1:operation name="updateBidLog" qname="ns4:updateBidLog" soapAction="" xmlns:ns4="http://bidMgmt">
+  <ns1:operation name="update_bid_transaction" qname="ns4:update_bid_transaction" soapAction="" xmlns:ns4="http://bidMgmt">
    <ns1:parameter qname="ns4:product_id" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns4:bidamount" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns4:bidder" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns4:time" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns4:username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="updateProductTable" qname="ns5:updateProductTable" soapAction="" xmlns:ns5="http://bidMgmt">
+  <ns1:operation name="update_transaction_detail" qname="ns5:update_transaction_detail" soapAction="" xmlns:ns5="http://bidMgmt">
+   <ns1:parameter qname="ns5:username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
    <ns1:parameter qname="ns5:product_id" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns5:bidder" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns5:bidamount" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns5:bid_amount" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns5:time" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="update_bid_transaction" qname="ns6:update_bid_transaction" soapAction="" xmlns:ns6="http://bidMgmt">
+  <ns1:operation name="updateBidLog" qname="ns6:updateBidLog" soapAction="" xmlns:ns6="http://bidMgmt">
    <ns1:parameter qname="ns6:product_id" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns6:username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns6:bidamount" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns6:bidder" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns6:time" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="update_transaction_detail" qname="ns7:update_transaction_detail" soapAction="" xmlns:ns7="http://bidMgmt">
-   <ns1:parameter qname="ns7:username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="updateProductTable" qname="ns7:updateProductTable" soapAction="" xmlns:ns7="http://bidMgmt">
    <ns1:parameter qname="ns7:product_id" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns7:bid_amount" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns7:time" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns7:bidder" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns7:bidamount" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:parameter name="allowedMethods" value="updateBidLog updateProductTable update_bid_transaction update_transaction_detail"/>
+  <ns1:parameter name="allowedMethods" value="updateBidLog update_bid_transaction updateProductTable update_transaction_detail"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="wsdlPortType" value="Bidding"/>
   <ns1:parameter name="className" value="bidMgmt.Bidding"/>
@@ -113,26 +113,24 @@
   <ns1:parameter name="className" value="org.apache.axis.Version"/>
  </ns1:service>
  <ns1:service name="Register" provider="java:RPC" style="wrapped" use="literal">
-  <ns1:operation name="addUser" qname="ns8:addUser" soapAction="" xmlns:ns8="http://userManagement">
-   <ns1:parameter qname="ns8:username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns8:password" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns8:first_name" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns8:last_name" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns8:telephone" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="chkUserExists" qname="ns8:chkUserExists" returnQName="ns8:chkUserExistsReturn" returnType="xsd:boolean" soapAction="" xmlns:ns8="http://userManagement" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns8:username" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="chkUserExists" qname="ns9:chkUserExists" returnQName="ns9:chkUserExistsReturn" returnType="xsd:boolean" soapAction="" xmlns:ns9="http://userManagement" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns9:username" type="xsd:string"/>
+  <ns1:operation name="addUser" qname="ns9:addUser" soapAction="" xmlns:ns9="http://userManagement">
+   <ns1:parameter qname="ns9:username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns9:password" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns9:first_name" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns9:last_name" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns9:telephone" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:parameter name="sendMultiRefs" value="false"/>
+  <ns1:parameter name="allowedMethods" value="addUser chkUserExists"/>
+  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+  <ns1:parameter name="wsdlPortType" value="Register"/>
+  <ns1:parameter name="className" value="userManagement.Register"/>
   <ns1:parameter name="wsdlServicePort" value="Register"/>
   <ns1:parameter name="schemaQualified" value="http://userManagement"/>
-  <ns1:parameter name="className" value="userManagement.Register"/>
-  <ns1:parameter name="typeMappingVersion" value="1.2"/>
-  <ns1:parameter name="allowedMethods" value="addUser chkUserExists"/>
-  <ns1:parameter name="wsdlPortType" value="Register"/>
-  <ns1:parameter name="wsdlServiceElement" value="RegisterService"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://userManagement"/>
-  <ns1:parameter name="sendXsiTypes" value="false"/>
+  <ns1:parameter name="wsdlServiceElement" value="RegisterService"/>
  </ns1:service>
  <ns1:service name="Login" provider="java:RPC" style="wrapped" use="literal">
   <ns1:operation name="validLogin" qname="ns10:validLogin" returnQName="ns10:validLoginReturn" returnType="xsd:boolean" soapAction="" xmlns:ns10="http://userManagement" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -149,9 +147,9 @@
   <ns1:parameter name="className" value="userManagement.Login"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="allowedMethods" value="validLogin updateLastLogin"/>
-  <ns1:parameter name="wsdlPortType" value="Login"/>
-  <ns1:parameter name="wsdlServiceElement" value="LoginService"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://userManagement"/>
+  <ns1:parameter name="wsdlServiceElement" value="LoginService"/>
+  <ns1:parameter name="wsdlPortType" value="Login"/>
   <ns1:parameter name="sendXsiTypes" value="false"/>
  </ns1:service>
  <ns1:transport name="http">

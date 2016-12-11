@@ -20,6 +20,16 @@
       <parameter name="className" value="bidMgmt.BiddingSoapBindingImpl"/>
       <parameter name="wsdlPortType" value="Bidding"/>
       <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="update_bid_transaction" qname="operNS:update_bid_transaction" xmlns:operNS="http://bidMgmt" soapAction="" >
+        <parameter qname="pns:product_id" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:username" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="update_transaction_detail" qname="operNS:update_transaction_detail" xmlns:operNS="http://bidMgmt" soapAction="" >
+        <parameter qname="pns:username" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:product_id" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:bid_amount" xmlns:pns="http://bidMgmt" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:time" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
       <operation name="updateBidLog" qname="operNS:updateBidLog" xmlns:operNS="http://bidMgmt" soapAction="" >
         <parameter qname="pns:product_id" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:bidamount" xmlns:pns="http://bidMgmt" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
@@ -31,17 +41,7 @@
         <parameter qname="pns:bidder" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:bidamount" xmlns:pns="http://bidMgmt" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <operation name="update_bid_transaction" qname="operNS:update_bid_transaction" xmlns:operNS="http://bidMgmt" soapAction="" >
-        <parameter qname="pns:product_id" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:username" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="update_transaction_detail" qname="operNS:update_transaction_detail" xmlns:operNS="http://bidMgmt" soapAction="" >
-        <parameter qname="pns:username" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:product_id" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:bid_amount" xmlns:pns="http://bidMgmt" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:time" xmlns:pns="http://bidMgmt" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <parameter name="allowedMethods" value="updateBidLog updateProductTable update_bid_transaction update_transaction_detail"/>
+      <parameter name="allowedMethods" value="updateBidLog update_bid_transaction updateProductTable update_transaction_detail"/>
 
   </service>
 </deployment>

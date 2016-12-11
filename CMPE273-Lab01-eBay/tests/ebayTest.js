@@ -13,7 +13,7 @@ describe("Login Test", function(){
 		
 		server
 		.post("/signin")
-		.send({"username" : "niranjan.tungatkar@sjsu.edu","password" :"niranjan"})
+		.send({"username" : "Hellow@gmail.com","password" :"niranjan"})
 		.expect("Content-type","/json")
 		.expect(200)
 		.end(function(err, res){
@@ -34,7 +34,7 @@ describe("Register Test", function(){
 				
 		server
 		.post("/register")
-		.send({"username" : "kenneth.go@sjsu.edu",
+		.send({"username" : "lala2@sjsu.edu",
 					"password" : "kenneth123",
 					"FirstName" : "Kenneth",
 					"LastName" : "Go",
@@ -78,7 +78,7 @@ describe("Check Session Test", function(){
 		.expect(200)
 		.end(function(err,res){
 			res.body.validFlag.should.equal(true);
-			res.body.sessionUser.should.equal("niranjan.tungatkar@sjsu.edu")
+			res.body.sessionUser.should.equal("Hellow@gmail.com")
 			
 			done();
 		})
